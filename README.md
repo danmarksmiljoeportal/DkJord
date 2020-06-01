@@ -46,30 +46,4 @@ After the user returns to the client via the redirect URL, the application will 
 
 You can do manual testing via Swagger, which will help you understand how to implement up against the the REST API.
 
-[PIC1]
-
-Swagger is relatively easy to use.
- 
-Log in by clicking here:
-[PIC2]
-
-Then here:
-[PIC3]
-
-Insert username and password here:
-[PIC4]
-
-Close the dialog:
-[PIC5]
-
-Choose a method and click “Try it out”:
-[PIC6]
-
-For the above method, insert a valid object, e.g. paste in this:
-BOX1
-
-Click Execute:
-[PIC7]
-
-Check the response:
-[PIC8]
+Check out this wiki page to learn more: https://github.com/danmarksmiljoeportal/DkJord/wiki/REST-API:-Manual-Testing-via-Swagger
