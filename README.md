@@ -2,9 +2,9 @@
 
 ## 1. The code
 ### .net core client with security
-Dmp.Jord.Integration.Sample is the The .net core client is located in the folder of the same name.
+Dmp.Jord.Integration.Sample is the .net core client located in the folder of the same name.
 
-It does a full codeflow login and then calls the dkjord api. Remember to look into "2. Security and access to the endpoint" as you would need the client id and secret.
+It does a full codeflow login (OAuth2) and then calls the dkjord api. Remember to look into "2. Security and access to the endpoint" as you would need the client id and secret.
 
 
 ## 2. Security and access to the endpoint
@@ -17,11 +17,11 @@ Please contact Danmarks Mlijøportal's support at support@miljoeportal.dk to get
 
 ### Endpoint urls
 
-| Environment | Url |Swagger | Swagger definintion|
+| Environment | Url |Swagger | API Document|
 | ----------- | ---------------- |----|---|
-| TEST        |  https://dkjord-api.test.miljoeportal.dk/ | https://dkjord-api.test.miljoeportal.dk/swagger/ |https://dkjord-api.test.miljoeportal.dk/swagger/v1/swagger.json |
-| DEMO        | https://dkjord-api.demo.miljoeportal.dk/ | https://dkjord-api.demo.miljoeportal.dk/swagger/ |https://dkjord-api.demo.miljoeportal.dk/swagger/v1/swagger.json |
-| PROD        | https://dkjord-api.miljoeportal.dk/ | https://dkjord-api.miljoeportal.dk/swagger/ |https://dkjord-api.miljoeportal.dk/swagger/v1/swagger.json |
+| TEST        |  https://dkjord-api.test.miljoeportal.dk/ | https://dkjord-api.test.miljoeportal.dk/swagger/ |https://dkjord-api.test.miljoeportal.dk/openapi |
+| DEMO        | https://dkjord-api.demo.miljoeportal.dk/ | https://dkjord-api.demo.miljoeportal.dk/swagger/ |https://dkjord-api.demo.miljoeportal.dk/swagger/openapi |
+| PROD        | https://dkjord-api.miljoeportal.dk/ | https://dkjord-api.miljoeportal.dk/swagger/ |https://dkjord-api.miljoeportal.dk/swagger/openapi |
 
 
 ## 3. Danmarks Miljøportal's Identity Provider
