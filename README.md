@@ -11,7 +11,7 @@ It does a full codeflow login and then calls the dkjord api. Remember to look in
 
 In order to communicate with the api, the code has to use the OAUTH codeflow against the endpoint. That means you have to contact DMP for registration on the DMP useradm for both test and production.
 
-You will need the role `DKJordlaes, dkjordvedligehold, DKJordSlet` in order to acces the endpoint. 
+You will need the role `DKJordlaes, dkjordvedligehold, DKJordSlet` in order to access the endpoint. 
 
 Please contact Danmarks Mlijøportal's support at support@miljoeportal.dk to get a client id and client secret for authorization.
 
