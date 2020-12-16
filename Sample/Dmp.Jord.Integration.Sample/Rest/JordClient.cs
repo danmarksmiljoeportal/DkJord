@@ -14,7 +14,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 {
     using System = global::System;
 
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class JordClient
     {
         private string _baseUrl = "";
@@ -48,6 +48,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
+        /// <summary>Returns the claims contained in user's access token. Can help identify if user is missing some necessary authorisation rights.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetClaimsAsync()
@@ -56,6 +57,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns the claims contained in user's access token. Can help identify if user is missing some necessary authorisation rights.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetClaimsAsync(System.Threading.CancellationToken cancellationToken)
@@ -64,6 +66,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/claims");
 
             var client_ = _httpClient;
+            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -77,6 +80,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
                     PrepareRequest(client_, request_, url_);
 
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
                     try
                     {
                         var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
@@ -88,51 +92,147 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
                         ProcessResponse(client_, response_);
 
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "401")
+                        if (status_ == 401)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ == "403")
+                        if (status_ == 403)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Forbidden", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == 404)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
-
-                        return default(System.Collections.Generic.ICollection<string>);
                     }
                     finally
                     {
-                        if (response_ != null)
+                        if (disposeResponse_)
                             response_.Dispose();
                     }
                 }
             }
             finally
             {
+                if (disposeClient_)
+                    client_.Dispose();
             }
         }
 
+        /// <summary>Returns information about the logged in user as extracted from the user's access token.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<UserInfo> GetUserInfoAsync()
+        {
+            return GetUserInfoAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns information about the logged in user as extracted from the user's access token.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<UserInfo> GetUserInfoAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/claims/userInfo");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UserInfo>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Returns information on whether the service can be reached.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<bool> IsAliveAsync()
@@ -141,6 +241,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns information on whether the service can be reached.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<bool> IsAliveAsync(System.Threading.CancellationToken cancellationToken)
@@ -149,6 +250,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/isAlive");
 
             var client_ = _httpClient;
+            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -162,6 +264,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
                     PrepareRequest(client_, request_, url_);
 
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
                     try
                     {
                         var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
@@ -173,118 +276,158 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
                         ProcessResponse(client_, response_);
 
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<bool>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
-
-                        return default(bool);
                     }
                     finally
                     {
-                        if (response_ != null)
+                        if (disposeResponse_)
                             response_.Dispose();
                     }
                 }
             }
             finally
             {
+                if (disposeClient_)
+                    client_.Dispose();
             }
         }
 
+        /// <summary>Returns an array of locations including information like planned actions, pollution causes, projects, status declarations and more.</summary>
+        /// <param name="regionCodes">[MISSING TEXT]</param>
+        /// <param name="municipalityCodes">[MISSING TEXT]</param>
+        /// <param name="locationReference">[MISSING TEXT]</param>
+        /// <param name="locationName">[MISSING TEXT]</param>
+        /// <param name="locationDescriptionText">[MISSING TEXT]</param>
+        /// <param name="totalBudgetEstimateAmounts">[MISSING TEXT]</param>
+        /// <param name="readyForReportingIndicator">[MISSING TEXT]</param>
+        /// <param name="useCode">[MISSING TEXT]</param>
+        /// <param name="plannedActionCode">[MISSING TEXT]</param>
+        /// <param name="plannedActionEndDateTime">[MISSING TEXT]</param>
+        /// <param name="currentTargetAreaCode">[MISSING TEXT]</param>
+        /// <param name="isIncludeParcel">[MISSING TEXT]</param>
+        /// <param name="searchText">[MISSING TEXT]</param>
+        /// <param name="sortField">[MISSING TEXT]</param>
+        /// <param name="sortDir">[MISSING TEXT]</param>
+        /// <param name="skip">[MISSING TEXT]</param>
+        /// <param name="take">[MISSING TEXT]</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<object> SearchLocationItemsAsync(System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string locationReference, string locationName, string locationDescriptionText, System.Collections.Generic.IEnumerable<double> totalBudgetEstimateAmounts, bool? readyForReportingIndicator, string useCode, string plannedActionCode, System.DateTimeOffset? plannedActionEndDateTime, string currentTargetAreaCode, string searchText, string sortField, string sortDir, int? skip, int? take, bool? isSortAsc)
+        public System.Threading.Tasks.Task<object> SearchLocationItemsAsync(System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string locationReference, string locationName, string locationDescriptionText, System.Collections.Generic.IEnumerable<double> totalBudgetEstimateAmounts, bool? readyForReportingIndicator, string useCode, string plannedActionCode, System.DateTimeOffset? plannedActionEndDateTime, string currentTargetAreaCode, bool? isIncludeParcel, string searchText, string sortField, string sortDir, int? skip, int? take)
         {
-            return SearchLocationItemsAsync(regionCodes, municipalityCodes, locationReference, locationName, locationDescriptionText, totalBudgetEstimateAmounts, readyForReportingIndicator, useCode, plannedActionCode, plannedActionEndDateTime, currentTargetAreaCode, searchText, sortField, sortDir, skip, take, isSortAsc, System.Threading.CancellationToken.None);
+            return SearchLocationItemsAsync(regionCodes, municipalityCodes, locationReference, locationName, locationDescriptionText, totalBudgetEstimateAmounts, readyForReportingIndicator, useCode, plannedActionCode, plannedActionEndDateTime, currentTargetAreaCode, isIncludeParcel, searchText, sortField, sortDir, skip, take, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns an array of locations including information like planned actions, pollution causes, projects, status declarations and more.</summary>
+        /// <param name="regionCodes">[MISSING TEXT]</param>
+        /// <param name="municipalityCodes">[MISSING TEXT]</param>
+        /// <param name="locationReference">[MISSING TEXT]</param>
+        /// <param name="locationName">[MISSING TEXT]</param>
+        /// <param name="locationDescriptionText">[MISSING TEXT]</param>
+        /// <param name="totalBudgetEstimateAmounts">[MISSING TEXT]</param>
+        /// <param name="readyForReportingIndicator">[MISSING TEXT]</param>
+        /// <param name="useCode">[MISSING TEXT]</param>
+        /// <param name="plannedActionCode">[MISSING TEXT]</param>
+        /// <param name="plannedActionEndDateTime">[MISSING TEXT]</param>
+        /// <param name="currentTargetAreaCode">[MISSING TEXT]</param>
+        /// <param name="isIncludeParcel">[MISSING TEXT]</param>
+        /// <param name="searchText">[MISSING TEXT]</param>
+        /// <param name="sortField">[MISSING TEXT]</param>
+        /// <param name="sortDir">[MISSING TEXT]</param>
+        /// <param name="skip">[MISSING TEXT]</param>
+        /// <param name="take">[MISSING TEXT]</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<object> SearchLocationItemsAsync(System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string locationReference, string locationName, string locationDescriptionText, System.Collections.Generic.IEnumerable<double> totalBudgetEstimateAmounts, bool? readyForReportingIndicator, string useCode, string plannedActionCode, System.DateTimeOffset? plannedActionEndDateTime, string currentTargetAreaCode, string searchText, string sortField, string sortDir, int? skip, int? take, bool? isSortAsc, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<object> SearchLocationItemsAsync(System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string locationReference, string locationName, string locationDescriptionText, System.Collections.Generic.IEnumerable<double> totalBudgetEstimateAmounts, bool? readyForReportingIndicator, string useCode, string plannedActionCode, System.DateTimeOffset? plannedActionEndDateTime, string currentTargetAreaCode, bool? isIncludeParcel, string searchText, string sortField, string sortDir, int? skip, int? take, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations?");
             if (regionCodes != null)
             {
-                foreach (var item_ in regionCodes) { urlBuilder_.Append(System.Uri.EscapeDataString("RegionCodes") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in regionCodes) { urlBuilder_.Append(System.Uri.EscapeDataString("regionCodes") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (municipalityCodes != null)
             {
-                foreach (var item_ in municipalityCodes) { urlBuilder_.Append(System.Uri.EscapeDataString("MunicipalityCodes") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in municipalityCodes) { urlBuilder_.Append(System.Uri.EscapeDataString("municipalityCodes") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (locationReference != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("LocationReference") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationReference, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("locationReference") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationReference, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (locationName != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("LocationName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("locationName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (locationDescriptionText != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("LocationDescriptionText") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationDescriptionText, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("locationDescriptionText") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationDescriptionText, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (totalBudgetEstimateAmounts != null)
             {
-                foreach (var item_ in totalBudgetEstimateAmounts) { urlBuilder_.Append(System.Uri.EscapeDataString("TotalBudgetEstimateAmounts") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+                foreach (var item_ in totalBudgetEstimateAmounts) { urlBuilder_.Append(System.Uri.EscapeDataString("totalBudgetEstimateAmounts") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (readyForReportingIndicator != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("ReadyForReportingIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(readyForReportingIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("readyForReportingIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(readyForReportingIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (useCode != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("UseCode") + "=").Append(System.Uri.EscapeDataString(ConvertToString(useCode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("useCode") + "=").Append(System.Uri.EscapeDataString(ConvertToString(useCode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (plannedActionCode != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("PlannedActionCode") + "=").Append(System.Uri.EscapeDataString(ConvertToString(plannedActionCode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("plannedActionCode") + "=").Append(System.Uri.EscapeDataString(ConvertToString(plannedActionCode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (plannedActionEndDateTime != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("PlannedActionEndDateTime") + "=").Append(System.Uri.EscapeDataString(plannedActionEndDateTime.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("plannedActionEndDateTime") + "=").Append(System.Uri.EscapeDataString(plannedActionEndDateTime.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (currentTargetAreaCode != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("CurrentTargetAreaCode") + "=").Append(System.Uri.EscapeDataString(ConvertToString(currentTargetAreaCode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("currentTargetAreaCode") + "=").Append(System.Uri.EscapeDataString(ConvertToString(currentTargetAreaCode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (isIncludeParcel != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("isIncludeParcel") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isIncludeParcel, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (searchText != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("SearchText") + "=").Append(System.Uri.EscapeDataString(ConvertToString(searchText, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("searchText") + "=").Append(System.Uri.EscapeDataString(ConvertToString(searchText, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (sortField != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("SortField") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sortField, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("sortField") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sortField, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (sortDir != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("SortDir") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sortDir, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("sortDir") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sortDir, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (skip != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("Skip") + "=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("skip") + "=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (take != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("Take") + "=").Append(System.Uri.EscapeDataString(ConvertToString(take, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (isSortAsc != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("IsSortAsc") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isSortAsc, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("take") + "=").Append(System.Uri.EscapeDataString(ConvertToString(take, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
             var client_ = _httpClient;
+            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -298,6 +441,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
                     PrepareRequest(client_, request_, url_);
 
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
                     try
                     {
                         var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
@@ -309,51 +453,55 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
                         ProcessResponse(client_, response_);
 
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<object>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "401")
+                        if (status_ == 401)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ == "403")
+                        if (status_ == 403)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Forbidden", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == 404)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
-
-                        return default(object);
                     }
                     finally
                     {
-                        if (response_ != null)
+                        if (disposeResponse_)
                             response_.Dispose();
                     }
                 }
             }
             finally
             {
+                if (disposeClient_)
+                    client_.Dispose();
             }
         }
 
+        /// <summary>Creates a new location including information like planned actions, pollution causes, projects, status declarations and more.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Guid> CreateLocationAsync(CreateLocationCommand body)
@@ -362,6 +510,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Creates a new location including information like planned actions, pollution causes, projects, status declarations and more.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Guid> CreateLocationAsync(CreateLocationCommand body, System.Threading.CancellationToken cancellationToken)
@@ -370,6 +519,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations");
 
             var client_ = _httpClient;
+            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -386,6 +536,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
                     PrepareRequest(client_, request_, url_);
 
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
                     try
                     {
                         var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
@@ -397,85 +548,106 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
                         ProcessResponse(client_, response_);
 
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "401")
+                        if (status_ == 401)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ == "403")
+                        if (status_ == 403)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Forbidden", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == 404)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
-
-                        return default(System.Guid);
                     }
                     finally
                     {
-                        if (response_ != null)
+                        if (disposeResponse_)
                             response_.Dispose();
                     }
                 }
             }
             finally
             {
+                if (disposeClient_)
+                    client_.Dispose();
             }
         }
 
+        /// <summary>Returns a location by location reference. You can specifically choose via parameters what information about the location you want to include in response.</summary>
+        /// <param name="locationReferenceQuery">[MISSING TEXT]</param>
+        /// <param name="projectIndicator">[MISSING TEXT]</param>
+        /// <param name="projectPhaseIndicator">[MISSING TEXT]</param>
+        /// <param name="pollutantIndicator">[MISSING TEXT]</param>
+        /// <param name="pollutionCauseIndicator">[MISSING TEXT]</param>
+        /// <param name="plannedActionIndicator">[MISSING TEXT]</param>
+        /// <param name="currentTargetAreaIndicator">[MISSING TEXT]</param>
+        /// <param name="currentUseIndicator">[MISSING TEXT]</param>
+        /// <param name="section8AutorizationIndicator">[MISSING TEXT]</param>
+        /// <param name="parcelIndicator">[MISSING TEXT]</param>
+        /// <param name="statusDeclarationIndicator">[MISSING TEXT]</param>
+        /// <param name="isIncludeParcel">[MISSING TEXT]</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<LocationDetailView> GetLocationDetailAsync(string locationReference, bool? projectIndicator, bool? currentTargetAreaIndicator, bool? currentUseIndicator, bool? parcelIndicator, bool? plannedActionIndicator, bool? pollutantIndicator, bool? pollutionCauseIndicator, bool? projectPhaseIndicator, bool? section8AutorizationIndicator, bool? statusDeclarationIndicator)
+        public System.Threading.Tasks.Task<LocationDetailView> GetLocationDetailAsync(string locationReferencePath, string locationReferenceQuery, bool? projectIndicator, bool? projectPhaseIndicator, bool? pollutantIndicator, bool? pollutionCauseIndicator, bool? plannedActionIndicator, bool? currentTargetAreaIndicator, bool? currentUseIndicator, bool? section8AutorizationIndicator, bool? parcelIndicator, bool? statusDeclarationIndicator, bool? isIncludeParcel)
         {
-            return GetLocationDetailAsync(locationReference, projectIndicator, currentTargetAreaIndicator, currentUseIndicator, parcelIndicator, plannedActionIndicator, pollutantIndicator, pollutionCauseIndicator, projectPhaseIndicator, section8AutorizationIndicator, statusDeclarationIndicator, System.Threading.CancellationToken.None);
+            return GetLocationDetailAsync(locationReferencePath, locationReferenceQuery, projectIndicator, projectPhaseIndicator, pollutantIndicator, pollutionCauseIndicator, plannedActionIndicator, currentTargetAreaIndicator, currentUseIndicator, section8AutorizationIndicator, parcelIndicator, statusDeclarationIndicator, isIncludeParcel, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns a location by location reference. You can specifically choose via parameters what information about the location you want to include in response.</summary>
+        /// <param name="locationReferenceQuery">[MISSING TEXT]</param>
+        /// <param name="projectIndicator">[MISSING TEXT]</param>
+        /// <param name="projectPhaseIndicator">[MISSING TEXT]</param>
+        /// <param name="pollutantIndicator">[MISSING TEXT]</param>
+        /// <param name="pollutionCauseIndicator">[MISSING TEXT]</param>
+        /// <param name="plannedActionIndicator">[MISSING TEXT]</param>
+        /// <param name="currentTargetAreaIndicator">[MISSING TEXT]</param>
+        /// <param name="currentUseIndicator">[MISSING TEXT]</param>
+        /// <param name="section8AutorizationIndicator">[MISSING TEXT]</param>
+        /// <param name="parcelIndicator">[MISSING TEXT]</param>
+        /// <param name="statusDeclarationIndicator">[MISSING TEXT]</param>
+        /// <param name="isIncludeParcel">[MISSING TEXT]</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<LocationDetailView> GetLocationDetailAsync(string locationReference, bool? projectIndicator, bool? currentTargetAreaIndicator, bool? currentUseIndicator, bool? parcelIndicator, bool? plannedActionIndicator, bool? pollutantIndicator, bool? pollutionCauseIndicator, bool? projectPhaseIndicator, bool? section8AutorizationIndicator, bool? statusDeclarationIndicator, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<LocationDetailView> GetLocationDetailAsync(string locationReferencePath, string locationReferenceQuery, bool? projectIndicator, bool? projectPhaseIndicator, bool? pollutantIndicator, bool? pollutionCauseIndicator, bool? plannedActionIndicator, bool? currentTargetAreaIndicator, bool? currentUseIndicator, bool? section8AutorizationIndicator, bool? parcelIndicator, bool? statusDeclarationIndicator, bool? isIncludeParcel, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations/{locationReference}?");
-            urlBuilder_.Replace("{locationReference}", System.Uri.EscapeDataString(ConvertToString(locationReference, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{locationReference}", System.Uri.EscapeDataString(ConvertToString(locationReferencePath, System.Globalization.CultureInfo.InvariantCulture)));
+            if (locationReferenceQuery != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("locationReference") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationReferenceQuery, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             if (projectIndicator != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("projectIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(projectIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (currentTargetAreaIndicator != null)
+            if (projectPhaseIndicator != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("currentTargetAreaIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(currentTargetAreaIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (currentUseIndicator != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("currentUseIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(currentUseIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (parcelIndicator != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("parcelIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parcelIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (plannedActionIndicator != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("plannedActionIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(plannedActionIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("projectPhaseIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(projectPhaseIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (pollutantIndicator != null)
             {
@@ -485,21 +657,38 @@ namespace Dmp.Jord.Integration.Sample.Rest
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("pollutionCauseIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pollutionCauseIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (projectPhaseIndicator != null)
+            if (plannedActionIndicator != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("projectPhaseIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(projectPhaseIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("plannedActionIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(plannedActionIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (currentTargetAreaIndicator != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("currentTargetAreaIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(currentTargetAreaIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (currentUseIndicator != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("currentUseIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(currentUseIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (section8AutorizationIndicator != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("section8AutorizationIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(section8AutorizationIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
+            if (parcelIndicator != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("parcelIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parcelIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             if (statusDeclarationIndicator != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("statusDeclarationIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(statusDeclarationIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
+            if (isIncludeParcel != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("isIncludeParcel") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isIncludeParcel, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             urlBuilder_.Length--;
 
             var client_ = _httpClient;
+            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -513,6 +702,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
                     PrepareRequest(client_, request_, url_);
 
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
                     try
                     {
                         var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
@@ -524,51 +714,55 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
                         ProcessResponse(client_, response_);
 
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<LocationDetailView>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "401")
+                        if (status_ == 401)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ == "403")
+                        if (status_ == 403)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Forbidden", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == 404)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
-
-                        return default(LocationDetailView);
                     }
                     finally
                     {
-                        if (response_ != null)
+                        if (disposeResponse_)
                             response_.Dispose();
                     }
                 }
             }
             finally
             {
+                if (disposeClient_)
+                    client_.Dispose();
             }
         }
 
+        /// <summary>Returns full list of all landfills in the database by their location reference.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetLocationLandfillsAsync()
@@ -577,6 +771,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns full list of all landfills in the database by their location reference.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetLocationLandfillsAsync(System.Threading.CancellationToken cancellationToken)
@@ -585,6 +780,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations/landfills");
 
             var client_ = _httpClient;
+            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -598,6 +794,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
                     PrepareRequest(client_, request_, url_);
 
                     var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
                     try
                     {
                         var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
@@ -609,48 +806,1209 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
                         ProcessResponse(client_, response_);
 
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200")
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "401")
+                        if (status_ == 401)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ == "403")
+                        if (status_ == 403)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Forbidden", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ == "404")
+                        if (status_ == 404)
                         {
                             string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new ApiException("Not Found", status_, responseText_, headers_, null);
                         }
                         else
-                        if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
-
-                        return default(System.Collections.Generic.ICollection<string>);
                     }
                     finally
                     {
-                        if (response_ != null)
+                        if (disposeResponse_)
                             response_.Dispose();
                     }
                 }
             }
             finally
             {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Returns full list of all landfill activities in the database.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetActivityCodesAssociatedLandfillsAsync()
+        {
+            return GetActivityCodesAssociatedLandfillsAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns full list of all landfill activities in the database.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetActivityCodesAssociatedLandfillsAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations/landfills/activities");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Returns full list of all landfill pollutants in the database.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<LandfillPollutantItem>> GetLandfillPollutantsAsync()
+        {
+            return GetLandfillPollutantsAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns full list of all landfill pollutants in the database.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<LandfillPollutantItem>> GetLandfillPollutantsAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations/landfills/pollutants");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<LandfillPollutantItem>>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Returns full list of all landfill pollution causes in the database.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetLandfillPollutionCauseCodesAsync()
+        {
+            return GetLandfillPollutionCauseCodesAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns full list of all landfill pollution causes in the database.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetLandfillPollutionCauseCodesAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations/landfills/pollutioncauses");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Updates an existing location by location id including information like planned actions,  pollution causes, projects, status declarations and more.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Guid> UpdateLocationAsync(System.Guid id, UpdateLocationCommand body)
+        {
+            return UpdateLocationAsync(id, body, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Updates an existing location by location id including information like planned actions,  pollution causes, projects, status declarations and more.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Guid> UpdateLocationAsync(System.Guid id, UpdateLocationCommand body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations/{id}");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Deletes an existing location by location id.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Guid> DeleteLocationAsync(System.Guid id)
+        {
+            return DeleteLocationAsync(id, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Deletes an existing location by location id.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Guid> DeleteLocationAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations/{id}");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Returns an array of Parcels.</summary>
+        /// <param name="cadastralDistrictIdentifier">[MISSING TEXT]</param>
+        /// <param name="landParcelIdentifier">[MISSING TEXT]</param>
+        /// <param name="locationReference">[MISSING TEXT]</param>
+        /// <param name="regionCodes">[MISSING TEXT]</param>
+        /// <param name="municipalityCodes">[MISSING TEXT]</param>
+        /// <param name="pollutionStatus">[MISSING TEXT]</param>
+        /// <param name="pollutionNuanceStatus">[MISSING TEXT]</param>
+        /// <param name="isUnclean">[MISSING TEXT]</param>
+        /// <param name="includeGeometries">[MISSING TEXT]</param>
+        /// <param name="geometryFormatType">[MISSING TEXT]</param>
+        /// <param name="modifiedDateFrom">[MISSING TEXT]</param>
+        /// <param name="recalculationDateFrom">[MISSING TEXT]</param>
+        /// <param name="sortField">[MISSING TEXT]</param>
+        /// <param name="sortByAscending">[MISSING TEXT]</param>
+        /// <param name="skip">[MISSING TEXT]</param>
+        /// <param name="take">[MISSING TEXT]</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<SearchView_1OfOfParcelItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null> SearchParcelsAsync(int? cadastralDistrictIdentifier, string landParcelIdentifier, string locationReference, System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string pollutionStatus, string pollutionNuanceStatus, bool? isUnclean, bool? includeGeometries, GeometryFormatType? geometryFormatType, System.DateTimeOffset? modifiedDateFrom, System.DateTimeOffset? recalculationDateFrom, ParcelSortField? sortField, bool? sortByAscending, int? skip, int? take)
+        {
+            return SearchParcelsAsync(cadastralDistrictIdentifier, landParcelIdentifier, locationReference, regionCodes, municipalityCodes, pollutionStatus, pollutionNuanceStatus, isUnclean, includeGeometries, geometryFormatType, modifiedDateFrom, recalculationDateFrom, sortField, sortByAscending, skip, take, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns an array of Parcels.</summary>
+        /// <param name="cadastralDistrictIdentifier">[MISSING TEXT]</param>
+        /// <param name="landParcelIdentifier">[MISSING TEXT]</param>
+        /// <param name="locationReference">[MISSING TEXT]</param>
+        /// <param name="regionCodes">[MISSING TEXT]</param>
+        /// <param name="municipalityCodes">[MISSING TEXT]</param>
+        /// <param name="pollutionStatus">[MISSING TEXT]</param>
+        /// <param name="pollutionNuanceStatus">[MISSING TEXT]</param>
+        /// <param name="isUnclean">[MISSING TEXT]</param>
+        /// <param name="includeGeometries">[MISSING TEXT]</param>
+        /// <param name="geometryFormatType">[MISSING TEXT]</param>
+        /// <param name="modifiedDateFrom">[MISSING TEXT]</param>
+        /// <param name="recalculationDateFrom">[MISSING TEXT]</param>
+        /// <param name="sortField">[MISSING TEXT]</param>
+        /// <param name="sortByAscending">[MISSING TEXT]</param>
+        /// <param name="skip">[MISSING TEXT]</param>
+        /// <param name="take">[MISSING TEXT]</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<SearchView_1OfOfParcelItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null> SearchParcelsAsync(int? cadastralDistrictIdentifier, string landParcelIdentifier, string locationReference, System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string pollutionStatus, string pollutionNuanceStatus, bool? isUnclean, bool? includeGeometries, GeometryFormatType? geometryFormatType, System.DateTimeOffset? modifiedDateFrom, System.DateTimeOffset? recalculationDateFrom, ParcelSortField? sortField, bool? sortByAscending, int? skip, int? take, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/parcels?");
+            if (cadastralDistrictIdentifier != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("cadastralDistrictIdentifier") + "=").Append(System.Uri.EscapeDataString(ConvertToString(cadastralDistrictIdentifier, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (landParcelIdentifier != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("landParcelIdentifier") + "=").Append(System.Uri.EscapeDataString(ConvertToString(landParcelIdentifier, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (locationReference != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("locationReference") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationReference, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (regionCodes != null)
+            {
+                foreach (var item_ in regionCodes) { urlBuilder_.Append(System.Uri.EscapeDataString("regionCodes") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
+            if (municipalityCodes != null)
+            {
+                foreach (var item_ in municipalityCodes) { urlBuilder_.Append(System.Uri.EscapeDataString("municipalityCodes") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
+            if (pollutionStatus != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("pollutionStatus") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pollutionStatus, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pollutionNuanceStatus != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("pollutionNuanceStatus") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pollutionNuanceStatus, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (isUnclean != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("isUnclean") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isUnclean, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeGeometries != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("includeGeometries") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeGeometries, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (geometryFormatType != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("geometryFormatType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(geometryFormatType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (modifiedDateFrom != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("modifiedDateFrom") + "=").Append(System.Uri.EscapeDataString(modifiedDateFrom.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (recalculationDateFrom != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("recalculationDateFrom") + "=").Append(System.Uri.EscapeDataString(recalculationDateFrom.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortField != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("sortField") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sortField, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortByAscending != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("sortByAscending") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sortByAscending, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (skip != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("skip") + "=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (take != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("take") + "=").Append(System.Uri.EscapeDataString(ConvertToString(take, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<SearchView_1OfOfParcelItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Not Found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Deletes a specific Parcel.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<object> DeleteParcelAsync(DeleteParcelRequest body)
+        {
+            return DeleteParcelAsync(body, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Deletes a specific Parcel.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<object> DeleteParcelAsync(DeleteParcelRequest body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/parcels");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<object>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Not Found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Creates a specific Parcel.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Guid> CreateParcelAsync(CreateParcelCommand body)
+        {
+            return CreateParcelAsync(body, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Creates a specific Parcel.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Guid> CreateParcelAsync(CreateParcelCommand body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/parcels");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Not Found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Returns an array of histories of Parcels.</summary>
+        /// <param name="cadastralDistrictIdentifier">[MISSING TEXT]</param>
+        /// <param name="landParcelIdentifier">[MISSING TEXT]</param>
+        /// <param name="locationReference">[MISSING TEXT]</param>
+        /// <param name="regionCodes">[MISSING TEXT]</param>
+        /// <param name="municipalityCodes">[MISSING TEXT]</param>
+        /// <param name="pollutionStatus">[MISSING TEXT]</param>
+        /// <param name="pollutionNuanceStatus">[MISSING TEXT]</param>
+        /// <param name="geometryFormatType">[MISSING TEXT]</param>
+        /// <param name="modifiedDateFrom">[MISSING TEXT]</param>
+        /// <param name="recalculationDateFrom">[MISSING TEXT]</param>
+        /// <param name="sortField">[MISSING TEXT]</param>
+        /// <param name="sortByAscending">[MISSING TEXT]</param>
+        /// <param name="skip">[MISSING TEXT]</param>
+        /// <param name="take">[MISSING TEXT]</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<SearchView_1OfOfParcelHistoryItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null> SearchParcelHistoriesAsync(int? cadastralDistrictIdentifier, string landParcelIdentifier, string locationReference, System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string pollutionStatus, string pollutionNuanceStatus, GeometryFormatType? geometryFormatType, System.DateTimeOffset? modifiedDateFrom, System.DateTimeOffset? recalculationDateFrom, ParcelSortField? sortField, bool? sortByAscending, int? skip, int? take)
+        {
+            return SearchParcelHistoriesAsync(cadastralDistrictIdentifier, landParcelIdentifier, locationReference, regionCodes, municipalityCodes, pollutionStatus, pollutionNuanceStatus, geometryFormatType, modifiedDateFrom, recalculationDateFrom, sortField, sortByAscending, skip, take, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns an array of histories of Parcels.</summary>
+        /// <param name="cadastralDistrictIdentifier">[MISSING TEXT]</param>
+        /// <param name="landParcelIdentifier">[MISSING TEXT]</param>
+        /// <param name="locationReference">[MISSING TEXT]</param>
+        /// <param name="regionCodes">[MISSING TEXT]</param>
+        /// <param name="municipalityCodes">[MISSING TEXT]</param>
+        /// <param name="pollutionStatus">[MISSING TEXT]</param>
+        /// <param name="pollutionNuanceStatus">[MISSING TEXT]</param>
+        /// <param name="geometryFormatType">[MISSING TEXT]</param>
+        /// <param name="modifiedDateFrom">[MISSING TEXT]</param>
+        /// <param name="recalculationDateFrom">[MISSING TEXT]</param>
+        /// <param name="sortField">[MISSING TEXT]</param>
+        /// <param name="sortByAscending">[MISSING TEXT]</param>
+        /// <param name="skip">[MISSING TEXT]</param>
+        /// <param name="take">[MISSING TEXT]</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<SearchView_1OfOfParcelHistoryItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null> SearchParcelHistoriesAsync(int? cadastralDistrictIdentifier, string landParcelIdentifier, string locationReference, System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string pollutionStatus, string pollutionNuanceStatus, GeometryFormatType? geometryFormatType, System.DateTimeOffset? modifiedDateFrom, System.DateTimeOffset? recalculationDateFrom, ParcelSortField? sortField, bool? sortByAscending, int? skip, int? take, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/parcels/histories?");
+            if (cadastralDistrictIdentifier != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("cadastralDistrictIdentifier") + "=").Append(System.Uri.EscapeDataString(ConvertToString(cadastralDistrictIdentifier, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (landParcelIdentifier != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("landParcelIdentifier") + "=").Append(System.Uri.EscapeDataString(ConvertToString(landParcelIdentifier, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (locationReference != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("locationReference") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationReference, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (regionCodes != null)
+            {
+                foreach (var item_ in regionCodes) { urlBuilder_.Append(System.Uri.EscapeDataString("regionCodes") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
+            if (municipalityCodes != null)
+            {
+                foreach (var item_ in municipalityCodes) { urlBuilder_.Append(System.Uri.EscapeDataString("municipalityCodes") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
+            if (pollutionStatus != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("pollutionStatus") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pollutionStatus, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (pollutionNuanceStatus != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("pollutionNuanceStatus") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pollutionNuanceStatus, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (geometryFormatType != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("geometryFormatType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(geometryFormatType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (modifiedDateFrom != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("modifiedDateFrom") + "=").Append(System.Uri.EscapeDataString(modifiedDateFrom.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (recalculationDateFrom != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("recalculationDateFrom") + "=").Append(System.Uri.EscapeDataString(recalculationDateFrom.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortField != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("sortField") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sortField, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (sortByAscending != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("sortByAscending") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sortByAscending, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (skip != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("skip") + "=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (take != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("take") + "=").Append(System.Uri.EscapeDataString(ConvertToString(take, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<SearchView_1OfOfParcelHistoryItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Not Found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>Returns report containing soil contamination information of a specific Parcel</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Guid> GenerateReportAsync(GenerateReportRequest body)
+        {
+            return GenerateReportAsync(body, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Returns report containing soil contamination information of a specific Parcel</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Guid> GenerateReportAsync(GenerateReportRequest body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/soilContaminations/generateReport");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
             }
         }
 
@@ -713,9 +2071,14 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
         private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
         {
+            if (value == null)
+            {
+                return "";
+            }
+
             if (value is System.Enum)
             {
-                string name = System.Enum.GetName(value.GetType(), value);
+                var name = System.Enum.GetName(value.GetType(), value);
                 if (name != null)
                 {
                     var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
@@ -728,94 +2091,82 @@ namespace Dmp.Jord.Integration.Sample.Rest
                             return attribute.Value != null ? attribute.Value : name;
                         }
                     }
+
+                    var converted = System.Convert.ToString(System.Convert.ChangeType(value, System.Enum.GetUnderlyingType(value.GetType()), cultureInfo));
+                    return converted == null ? string.Empty : converted;
                 }
             }
             else if (value is bool)
             {
-                return System.Convert.ToString(value, cultureInfo).ToLowerInvariant();
+                return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
             }
             else if (value is byte[])
             {
                 return System.Convert.ToBase64String((byte[])value);
             }
-            else if (value != null && value.GetType().IsArray)
+            else if (value.GetType().IsArray)
             {
                 var array = System.Linq.Enumerable.OfType<object>((System.Array)value);
                 return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
             }
 
-            return System.Convert.ToString(value, cultureInfo);
+            var result = System.Convert.ToString(value, cultureInfo);
+            return result == null ? "" : result;
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class CreateLocationCommand
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UserInfo
     {
-        [Newtonsoft.Json.JsonProperty("locationReference", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.StringLength(9)]
-        public string LocationReference { get; set; }
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("locationName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(2000)]
-        public string LocationName { get; set; }
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("locationDescriptionText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(2000)]
-        public string LocationDescriptionText { get; set; }
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Email { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? RegionCode { get; set; }
+        [Newtonsoft.Json.JsonProperty("region", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Region { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("municipalityCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MunicipalityCode { get; set; }
+        [Newtonsoft.Json.JsonProperty("userName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UserName { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("streetCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? StreetCode { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("streetBuildingIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string StreetBuildingIdentifier { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("totalBudgetEstimateAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? TotalBudgetEstimateAmount { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("readyForReportingIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? ReadyForReportingIndicator { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("pollutionStatusCodeValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string PollutionStatusCodeValue { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("pollutionStatusCodeType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? PollutionStatusCodeType { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("userPrincipalName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UserPrincipalName { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    /// <summary>[MISSING TEXT]</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class AddressAccess
     {
-        [Newtonsoft.Json.JsonProperty("municipalityCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("municipalityCode", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string MunicipalityCode { get; set; }
 
+        /// <summary>[MISSING TEXT]</summary>
         [Newtonsoft.Json.JsonProperty("streetCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string StreetCode { get; set; }
 
+        /// <summary>[MISSING TEXT]</summary>
         [Newtonsoft.Json.JsonProperty("streetBuildingIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string StreetBuildingIdentifier { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class PlannedAction
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid Id { get; set; }
 
         [Newtonsoft.Json.JsonProperty("plannedActionCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string PlannedActionCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("plannedActionEndDateTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -824,13 +2175,14 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class PollutionCause
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid Id { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pollutionCauseCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string PollutionCauseCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pollutionActivityCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -845,7 +2197,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Geometry
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -863,28 +2215,31 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Pollutant
     {
         [Newtonsoft.Json.JsonProperty("pollutantComponentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid PollutantComponentId { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pollutantComponentCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string PollutantComponentCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("contaminatedMediaCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string ContaminatedMediaCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pollutionConcentrationAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? PollutionConcentrationAmount { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pollutionConcentrationUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(20)]
         public string PollutionConcentrationUnit { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Treatment
     {
         [Newtonsoft.Json.JsonProperty("treatmentStartDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -894,21 +2249,25 @@ namespace Dmp.Jord.Integration.Sample.Rest
         public System.DateTimeOffset? TreatmentEndDate { get; set; }
 
         [Newtonsoft.Json.JsonProperty("tonnesTreatedQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0D, double.MaxValue)]
         public double? TonnesTreatedQuantity { get; set; }
 
         [Newtonsoft.Json.JsonProperty("treatmentKind", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(12, 18)]
         public int TreatmentKind { get; set; }
 
         [Newtonsoft.Json.JsonProperty("treatmentCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string TreatmentCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("commentText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(255)]
         public string CommentText { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ProjectPhase
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -920,10 +2279,15 @@ namespace Dmp.Jord.Integration.Sample.Rest
         [Newtonsoft.Json.JsonProperty("projectPhaseEndDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? ProjectPhaseEndDate { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("legalFrameworkCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
+        public string LegalFrameworkCode { get; set; }
+
         [Newtonsoft.Json.JsonProperty("currentTargetAreaCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> CurrentTargetAreaCodes { get; set; }
 
         [Newtonsoft.Json.JsonProperty("projectPhaseCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string ProjectPhaseCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("geometries", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -938,26 +2302,28 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Cost
     {
         [Newtonsoft.Json.JsonProperty("costYearIdentifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(1900, 9999)]
         public int CostYearIdentifier { get; set; }
 
         [Newtonsoft.Json.JsonProperty("costAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0D, double.MaxValue)]
         public double? CostAmount { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Project
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid Id { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("projectNumberIdentifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long ProjectNumberIdentifier { get; set; }
+        [Newtonsoft.Json.JsonProperty("projectNumberIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ProjectNumberIdentifier { get; set; }
 
         [Newtonsoft.Json.JsonProperty("projectDescriptionText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ProjectDescriptionText { get; set; }
@@ -972,13 +2338,14 @@ namespace Dmp.Jord.Integration.Sample.Rest
         public System.DateTimeOffset? ProjectEndDate { get; set; }
 
         [Newtonsoft.Json.JsonProperty("payerCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string PayerCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pastCostAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double PastCostAmount { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("currentTargetAreaCodeCollection", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> CurrentTargetAreaCodeCollection { get; set; }
+        [Newtonsoft.Json.JsonProperty("currentTargetAreaCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> CurrentTargetAreaCodes { get; set; }
 
         [Newtonsoft.Json.JsonProperty("projectPhases", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<ProjectPhase> ProjectPhases { get; set; }
@@ -989,28 +2356,31 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Section8Authorization
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid Id { get; set; }
 
         [Newtonsoft.Json.JsonProperty("areaMeasure", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0D, double.MaxValue)]
         public double? AreaMeasure { get; set; }
 
         [Newtonsoft.Json.JsonProperty("applicationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? ApplicationDate { get; set; }
 
         [Newtonsoft.Json.JsonProperty("useCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string UseCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("justificationCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string JustificationCode { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class StatusDeclaration
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1026,12 +2396,16 @@ namespace Dmp.Jord.Integration.Sample.Rest
         public System.DateTimeOffset? RequirementForV2StudyDate { get; set; }
 
         [Newtonsoft.Json.JsonProperty("justificationCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string JustificationCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pollutionQualificationCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string PollutionQualificationCode { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("pollutionStatusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("pollutionStatusCode", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string PollutionStatusCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("areaMeasure", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1043,13 +2417,99 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CreateLocationCommand
+    {
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("locationReference", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(9)]
+        public string LocationReference { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("locationName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(2000)]
+        public string LocationName { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("locationDescriptionText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(2000)]
+        public string LocationDescriptionText { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string RegionCode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("addressAccess", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public AddressAccess AddressAccess { get; set; } = new AddressAccess();
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("totalBudgetEstimateAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TotalBudgetEstimateAmount { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("readyForReportingIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ReadyForReportingIndicator { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("pollutionStatusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutionStatusCode { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("allowExpiredCodesIndicator", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool AllowExpiredCodesIndicator { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("allowKnowledgeLevelCreateIndicator", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool AllowKnowledgeLevelCreateIndicator { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("useCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> UseCodes { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("plannedActions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<PlannedAction> PlannedActions { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("pollutionCauses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<PollutionCause> PollutionCauses { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("currentTargetAreaCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> CurrentTargetAreaCodes { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("projects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Project> Projects { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("section8Authorizations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Section8Authorization> Section8Authorizations { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("statusDeclarations", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.MinLength(1)]
+        public System.Collections.Generic.ICollection<StatusDeclaration> StatusDeclarations { get; set; } = new System.Collections.ObjectModel.Collection<StatusDeclaration>();
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("pollutants", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Pollutant> Pollutants { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MATRLandParcelIdentification
     {
         [Newtonsoft.Json.JsonProperty("cadastralDistrictName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CadastralDistrictName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("cadastralDistrictIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^\d{5,7}$")]
         public string CadastralDistrictIdentifier { get; set; }
 
         [Newtonsoft.Json.JsonProperty("landParcelIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1061,28 +2521,43 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Parcel
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid Id { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("martLandParcelIdentification", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public MATRLandParcelIdentification MartLandParcelIdentification { get; set; }
+        [Newtonsoft.Json.JsonProperty("matrLandParcelIdentification", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public MATRLandParcelIdentification MatrLandParcelIdentification { get; set; } = new MATRLandParcelIdentification();
 
         [Newtonsoft.Json.JsonProperty("housingStatementIndicator", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool HousingStatementIndicator { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pollutionStatusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string PollutionStatusCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pollutionPartialIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? PollutionPartialIndicator { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("pollutionNuanceStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10)]
+        public string PollutionNuanceStatus { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("recalculationDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset RecalculationDate { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int RegionCode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("municipalityCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MunicipalityCode { get; set; }
+
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class LocationDetailView
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1142,7 +2617,896 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class LandfillPollutantItem
+    {
+        [Newtonsoft.Json.JsonProperty("pollutantCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutantCode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pollutantName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutantName { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pollutantCompoundGroup", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutantCompoundGroup { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("concentration", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Concentration { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("modelCompoundCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ModelCompoundCode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("modelCompoundName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ModelCompoundName { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdateLocationCommand
+    {
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("locationReference", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(9)]
+        public string LocationReference { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("locationName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(2000)]
+        public string LocationName { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("locationDescriptionText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(2000)]
+        public string LocationDescriptionText { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string RegionCode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("addressAccess", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public AddressAccess AddressAccess { get; set; } = new AddressAccess();
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("totalBudgetEstimateAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TotalBudgetEstimateAmount { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("readyForReportingIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ReadyForReportingIndicator { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("pollutionStatusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutionStatusCode { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("useCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> UseCodes { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("plannedActions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<PlannedAction> PlannedActions { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("pollutionCauses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<PollutionCause> PollutionCauses { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("currentTargetAreaCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> CurrentTargetAreaCodes { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("projects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Project> Projects { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("section8Authorizations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Section8Authorization> Section8Authorizations { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("statusDeclarations", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.MinLength(1)]
+        public System.Collections.Generic.ICollection<StatusDeclaration> StatusDeclarations { get; set; } = new System.Collections.ObjectModel.Collection<StatusDeclaration>();
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("pollutants", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Pollutant> Pollutants { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("allowExpiredCodesIndicator", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool AllowExpiredCodesIndicator { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("allowKnowledgeLevelCreateIndicator", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool AllowKnowledgeLevelCreateIndicator { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum GeometryFormatType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Gml")]
+        Gml = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Shape")]
+        Shape = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Wkt")]
+        Wkt = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ParcelSortField
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"CadastralDistrictIdentifier")]
+        CadastralDistrictIdentifier = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LandParcelIdentifier")]
+        LandParcelIdentifier = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RegionCode")]
+        RegionCode = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"MunicipalityCode")]
+        MunicipalityCode = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"PollutionStatus")]
+        PollutionStatus = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"PollutionNuanceStatus")]
+        PollutionNuanceStatus = 5,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum PrecisionModels
+    {
+        _0 = 0,
+
+        _1 = 1,
+
+        _2 = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class PrecisionModel
+    {
+        [Newtonsoft.Json.JsonProperty("isFloating", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFloating { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("maximumSignificantDigits", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MaximumSignificantDigits { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("scale", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Scale { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("precisionModelType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public PrecisionModels PrecisionModelType { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum Ordinates
+    {
+        _0 = 0,
+
+        _1 = 1,
+
+        _2 = 2,
+
+        _3 = 3,
+
+        _4 = 4,
+
+        _7 = 7,
+
+        _8 = 8,
+
+        _16 = 16,
+
+        _32 = 32,
+
+        _64 = 64,
+
+        _128 = 128,
+
+        _256 = 256,
+
+        _512 = 512,
+
+        _1024 = 1024,
+
+        _2048 = 2048,
+
+        _4096 = 4096,
+
+        _8192 = 8192,
+
+        _16384 = 16384,
+
+        _32768 = 32768,
+
+        _65535 = 65535,
+
+        _65536 = 65536,
+
+        _65539 = 65539,
+
+        _65543 = 65543,
+
+        _131072 = 131072,
+
+        _262144 = 262144,
+
+        _524288 = 524288,
+
+        _1048576 = 1048576,
+
+        _2097152 = 2097152,
+
+        _4194304 = 4194304,
+
+        _8388608 = 8388608,
+
+        _16777216 = 16777216,
+
+        _33554432 = 33554432,
+
+        _67108864 = 67108864,
+
+        _134217728 = 134217728,
+
+        _268435456 = 268435456,
+
+        _536870912 = 536870912,
+
+        _1073741824 = 1073741824,
+
+        __2147483648 = -2147483648,
+
+        __65536 = -65536,
+
+        __1 = -1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CoordinateSequenceFactory
+    {
+        [Newtonsoft.Json.JsonProperty("ordinates", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Ordinates Ordinates { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class GeometryFactory
+    {
+        [Newtonsoft.Json.JsonProperty("precisionModel", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public PrecisionModel PrecisionModel { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("coordinateSequenceFactory", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public CoordinateSequenceFactory CoordinateSequenceFactory { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("srid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Srid { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum OgcGeometryType
+    {
+        _1 = 1,
+
+        _2 = 2,
+
+        _3 = 3,
+
+        _4 = 4,
+
+        _5 = 5,
+
+        _6 = 6,
+
+        _7 = 7,
+
+        _8 = 8,
+
+        _9 = 9,
+
+        _10 = 10,
+
+        _11 = 11,
+
+        _12 = 12,
+
+        _13 = 13,
+
+        _14 = 14,
+
+        _15 = 15,
+
+        _16 = 16,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Coordinate
+    {
+        [Newtonsoft.Json.JsonProperty("x", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double X { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("y", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Y { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("z", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Z { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("m", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double M { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("coordinateValue", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Coordinate CoordinateValue { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CoordinateSequence
+    {
+        [Newtonsoft.Json.JsonProperty("dimension", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Dimension { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("measures", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Measures { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("spatial", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Spatial { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ordinates", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Ordinates Ordinates { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("hasZ", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool HasZ { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("hasM", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool HasM { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("zOrdinateIndex", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ZOrdinateIndex { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("mOrdinateIndex", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MOrdinateIndex { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("count", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Count { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum Dimension
+    {
+        _0 = 0,
+
+        _1 = 1,
+
+        _2 = 2,
+
+        __3 = -3,
+
+        __2 = -2,
+
+        __1 = -1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Envelope
+    {
+        [Newtonsoft.Json.JsonProperty("isNull", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsNull { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Width { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Height { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("minX", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double MinX { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("maxX", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double MaxX { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("minY", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double MinY { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("maxY", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double MaxY { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("area", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Area { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("minExtent", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double MinExtent { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("maxExtent", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double MaxExtent { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("centre", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Coordinate Centre { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Point
+    {
+        [Newtonsoft.Json.JsonProperty("coordinateSequence", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public CoordinateSequence CoordinateSequence { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("coordinates", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Coordinate> Coordinates { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("numPoints", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int NumPoints { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isEmpty", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsEmpty { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("dimension", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Dimension Dimension { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("boundaryDimension", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Dimension BoundaryDimension { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("x", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double X { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("y", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Y { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("coordinate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Coordinate Coordinate { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("geometryType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string GeometryType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ogcGeometryType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public OgcGeometryType OgcGeometryType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("boundary", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Geometry2 Boundary { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("z", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Z { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("m", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double M { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("factory", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public GeometryFactory Factory { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("userData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object UserData { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("srid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Srid { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("precisionModel", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public PrecisionModel PrecisionModel { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("numGeometries", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int NumGeometries { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isSimple", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsSimple { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isValid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsValid { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("area", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Area { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Length { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("centroid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Point Centroid { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("interiorPoint", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Point InteriorPoint { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pointOnSurface", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Point PointOnSurface { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("envelope", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Geometry2 Envelope { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("envelopeInternal", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Envelope EnvelopeInternal { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isRectangle", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRectangle { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Geometry2
+    {
+        [Newtonsoft.Json.JsonProperty("factory", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public GeometryFactory Factory { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("userData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object UserData { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("srid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Srid { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("geometryType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string GeometryType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ogcGeometryType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public OgcGeometryType OgcGeometryType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("precisionModel", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public PrecisionModel PrecisionModel { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("coordinate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Coordinate Coordinate { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("coordinates", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<Coordinate> Coordinates { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("numPoints", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int NumPoints { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("numGeometries", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int NumGeometries { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isSimple", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsSimple { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isValid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsValid { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isEmpty", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsEmpty { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("area", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Area { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Length { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("centroid", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Point Centroid { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("interiorPoint", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Point InteriorPoint { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pointOnSurface", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Point PointOnSurface { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("dimension", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Dimension Dimension { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("boundary", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Geometry2 Boundary { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("boundaryDimension", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Dimension BoundaryDimension { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("envelope", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Geometry2 Envelope { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("envelopeInternal", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Envelope EnvelopeInternal { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isRectangle", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRectangle { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class StatusDeclarationXGeometry
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid Id { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("daiThemeReference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DaiThemeReference { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("daiObjectReference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DaiObjectReference { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("geometryDataText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string GeometryDataText { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("shape", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Geometry2 Shape { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ParcelXStatusDeclarationViewItem
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid Id { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("statusDeclarationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid StatusDeclarationId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("geometries", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<StatusDeclarationXGeometry> Geometries { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ParcelItem
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid Id { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("cadastralDistrictIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CadastralDistrictIdentifier { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("landParcelIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LandParcelIdentifier { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("housingStatementIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HousingStatementIndicator { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pollutionStatusCodeType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PollutionStatusCodeType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pollutionStatusCodeValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutionStatusCodeValue { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pollutionNuanceStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutionNuanceStatus { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pollutionPartial", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PollutionPartial { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("recalculationDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset RecalculationDate { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int RegionCode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("municipalityCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MunicipalityCode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("modifiedDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset ModifiedDate { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("parcelXStatusDeclarations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ParcelXStatusDeclarationViewItem> ParcelXStatusDeclarations { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SearchView_1OfOfParcelItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null
+    {
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ParcelItem> Items { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Total { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProblemDetails
+    {
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Type { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Status { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("detail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Detail { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("instance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Instance { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class DeleteParcelRequest
+    {
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("cadastralDistrictIdentifier", Required = Newtonsoft.Json.Required.Always)]
+        public int CadastralDistrictIdentifier { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("landParcelIdentifier", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string LandParcelIdentifier { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.Always)]
+        public int RegionCode { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ParcelXStatusDeclarationComandItem
+    {
+        [Newtonsoft.Json.JsonProperty("statusDeclarationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid StatusDeclarationId { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CreateParcelCommand
+    {
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("cadastralDistrictIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CadastralDistrictIdentifier { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("landParcelIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LandParcelIdentifier { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("housingStatemenetIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HousingStatemenetIndicator { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("pollutionStatusCodeType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PollutionStatusCodeType { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("pollutionStatusCodeValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutionStatusCodeValue { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("pollutionPartial", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PollutionPartial { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("pollutionNuanceStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutionNuanceStatus { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("recalculationDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset RecalculationDate { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int RegionCode { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("municipalityCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MunicipalityCode { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("statusDeclarations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ParcelXStatusDeclarationComandItem> StatusDeclarations { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ParcelXStatusDeclarationViewHistoryItem
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid Id { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("statusDeclarationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid StatusDeclarationId { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ParcelHistoryItem
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid Id { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Action { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("cadastralDistrictIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CadastralDistrictIdentifier { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("landParcelIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LandParcelIdentifier { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("housingStatementIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HousingStatementIndicator { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pollutionStatusCodeType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PollutionStatusCodeType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pollutionStatusCodeValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutionStatusCodeValue { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pollutionNuanceStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutionNuanceStatus { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pollutionPartial", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PollutionPartial { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("recalculationDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset RecalculationDate { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int RegionCode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("municipalityCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MunicipalityCode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("modifiedDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset ModifiedDate { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("parcelXStatusDeclarations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ParcelXStatusDeclarationViewHistoryItem> ParcelXStatusDeclarations { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SearchView_1OfOfParcelHistoryItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null
+    {
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ParcelHistoryItem> Items { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Total { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class GenerateReportRequest
+    {
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("cadastralDistrictIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CadastralDistrictIdentifier { get; set; }
+
+        /// <summary>[MISSING TEXT]</summary>
+        [Newtonsoft.Json.JsonProperty("landParcelIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string LandParcelIdentifier { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class ApiException : System.Exception
     {
         public int StatusCode { get; private set; }
@@ -1152,7 +3516,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
         public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
 
         public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException)
-            : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + response.Substring(0, response.Length >= 512 ? 512 : response.Length), innerException)
+            : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + ((response == null) ? "(null)" : response.Substring(0, response.Length >= 512 ? 512 : response.Length)), innerException)
         {
             StatusCode = statusCode;
             Response = response;
@@ -1165,7 +3529,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class ApiException<TResult> : ApiException
     {
         public TResult Result { get; private set; }
@@ -1176,7 +3540,6 @@ namespace Dmp.Jord.Integration.Sample.Rest
             Result = result;
         }
     }
-
 }
 
 #pragma warning restore 1591

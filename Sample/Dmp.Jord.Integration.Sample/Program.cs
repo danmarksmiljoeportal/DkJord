@@ -12,7 +12,7 @@ namespace Dmp.Jord.Integration.Sample
     {
         static async Task Main(string[] args)
         {
-            var apiUrl = "https://jord-udv-api-app.azurewebsites.net/";
+            var apiUrl = "https://jorddev-api.azurewebsites.net/";
             var jordClient = await RestFactory.CreateAsync(apiUrl);
 
             await IsAliveAsync(jordClient);

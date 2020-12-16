@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Sources\\DMP\\DKJord\\dkjord-3party-integration\\Sample\\Dmp.Jord.Integration.Sample\\Dmp.Jord.Integration.Sample.csproj": {}
+    "D:\\Work\\Jord\\DkJord\\Sample\\Dmp.Jord.Integration.Sample\\Dmp.Jord.Integration.Sample.csproj": {}
   },
   "projects": {
-    "D:\\Sources\\DMP\\DKJord\\dkjord-3party-integration\\Sample\\Dmp.Jord.Integration.Sample\\Dmp.Jord.Integration.Sample.csproj": {
+    "D:\\Work\\Jord\\DkJord\\Sample\\Dmp.Jord.Integration.Sample\\Dmp.Jord.Integration.Sample.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Sources\\DMP\\DKJord\\dkjord-3party-integration\\Sample\\Dmp.Jord.Integration.Sample\\Dmp.Jord.Integration.Sample.csproj",
+        "projectUniqueName": "D:\\Work\\Jord\\DkJord\\Sample\\Dmp.Jord.Integration.Sample\\Dmp.Jord.Integration.Sample.csproj",
         "projectName": "Dmp.Jord.Integration.Sample",
-        "projectPath": "D:\\Sources\\DMP\\DKJord\\dkjord-3party-integration\\Sample\\Dmp.Jord.Integration.Sample\\Dmp.Jord.Integration.Sample.csproj",
-        "packagesPath": "C:\\Users\\CHINH\\.nuget\\packages\\",
-        "outputPath": "D:\\Sources\\DMP\\DKJord\\dkjord-3party-integration\\Sample\\Dmp.Jord.Integration.Sample\\obj\\",
+        "projectPath": "D:\\Work\\Jord\\DkJord\\Sample\\Dmp.Jord.Integration.Sample\\Dmp.Jord.Integration.Sample.csproj",
+        "packagesPath": "C:\\Users\\13520\\.nuget\\packages\\",
+        "outputPath": "D:\\Work\\Jord\\DkJord\\Sample\\Dmp.Jord.Integration.Sample\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\CHINH\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\13520\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,7 +22,8 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://pkgs.dev.azure.com/miljoeportal/_packaging/common/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
@@ -65,7 +63,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
