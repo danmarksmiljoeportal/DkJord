@@ -4,7 +4,7 @@
 ### .net core client with security
 Dmp.Jord.Integration.Sample is the The .net core client is located in the folder of the same name.
 
-It does a full codeflow login and then calls the dkjord api. Remember to look into "1. Security and access to the endpoint" as you would need the client id and secret.
+It does a full codeflow login and then calls the dkjord api. Remember to look into "2. Security and access to the endpoint" as you would need the client id and secret.
 
 
 ## 2. Security and access to the endpoint
