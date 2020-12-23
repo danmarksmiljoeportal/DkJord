@@ -1,10 +1,8 @@
 #DKJord API integration guide
 
-## 1. The code
-### .net core client with security
-Dmp.Jord.Integration.Sample is the .net core client located in the folder of the same name.
+## 1. Support
 
-It does a full authorization flow (OAuth2) and then calls the dkjord api. Remember to look into "2. Security and access to the endpoint" as you would need the client id and secret.
+Please visit the wiki page for support: 
 
 
 ## 2. Security and access to the endpoint
