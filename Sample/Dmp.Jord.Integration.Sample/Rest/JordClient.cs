@@ -14,7 +14,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 {
     using System = global::System;
 
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class JordClient
     {
         private string _baseUrl = "";
@@ -306,53 +306,47 @@ namespace Dmp.Jord.Integration.Sample.Rest
             }
         }
 
-        /// <summary>Returns an array of locations including information like planned actions, pollution causes, projects, status declarations and more.</summary>
-        /// <param name="regionCodes">[MISSING TEXT]</param>
-        /// <param name="municipalityCodes">[MISSING TEXT]</param>
-        /// <param name="locationReference">[MISSING TEXT]</param>
-        /// <param name="locationName">[MISSING TEXT]</param>
-        /// <param name="locationDescriptionText">[MISSING TEXT]</param>
-        /// <param name="totalBudgetEstimateAmounts">[MISSING TEXT]</param>
-        /// <param name="readyForReportingIndicator">[MISSING TEXT]</param>
-        /// <param name="useCode">[MISSING TEXT]</param>
-        /// <param name="plannedActionCode">[MISSING TEXT]</param>
-        /// <param name="plannedActionEndDateTime">[MISSING TEXT]</param>
-        /// <param name="currentTargetAreaCode">[MISSING TEXT]</param>
-        /// <param name="isIncludeParcel">[MISSING TEXT]</param>
-        /// <param name="searchText">[MISSING TEXT]</param>
-        /// <param name="sortField">[MISSING TEXT]</param>
-        /// <param name="sortDir">[MISSING TEXT]</param>
-        /// <param name="skip">[MISSING TEXT]</param>
-        /// <param name="take">[MISSING TEXT]</param>
+        /// <summary>Returns an array of locations including information like planned actions, pollution causes, projects, status declarations and more. Please notice that there is no restriction on number of items that can be returned in the request, but for performance reasons, it is advised that you limit the number of objects using skip and take.</summary>
+        /// <param name="regionCodes">An array of Region Codes. Allowed formats are {1081, 1082, 1083, 1084, 1085}.</param>
+        /// <param name="municipalityCodes">An array of Municipality Codes. Allowed formats are e.g. {101, 147, 151, 153, ...}. You can find all municipality codes here: https://danmarksadresser.dk/adressedata/kodelister/kommunekodeliste/.</param>
+        /// <param name="locationReference">Distinct Reference for a Location. Typical format e.g. {745-00084}. A Location is a Jord-specific term used to refer to a specific area within a Region. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="locationName">Userfriendly Name for a Location. Typical format e.g. {Kobbersmedje i Rebild}. A Location is a Jord-specific term used to refer to a specific area within a Region. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="locationDescriptionText">A detailed userfriendly name for a Location. Typical format e.g. {Ældre Bruntvej 1, 8660 Skanderborg}. A Location is a Jord-specific term used to refer to a specific area within a Region. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="readyForReportingIndicator">When set to TRUE, it will only return locations that are ready for reporting. When set to FALSE, it will only return locations that are not ready for reporting. Do not send any value in order to ignore this filter.</param>
+        /// <param name="useCode">Searches by int (as string) values referring to what the location is being used for. E.g. '17' refers to "Fyld- og losseplads".</param>
+        /// <param name="plannedActionCode">Searches by  (as string) values referring to actions planned on the location. E.g. '05' refers to "Undersøgelse, videregående".</param>
+        /// <param name="plannedActionEndDateTime">Searches for locations which has planned actions that exactly end on same date as the set filter date.</param>
+        /// <param name="currentTargetAreaCode">Searches for locations which has planned actions that exactly end on same date as the set filter date.</param>
+        /// <param name="isIncludeParcel">When set to TRUE, each returned Locations will include all Parcel objects that have been affected by pollution areas (Status Declarations) within it.</param>
+        /// <param name="searchText">The search string of this field will be compared with the fields location reference, location name and location description to see if any of them match.</param>
+        /// <param name="skip">Results are organized in an indexed order.Using the Skip function, the user can decide from which index to start the search.This parameter combined with the parameter 'take' enables use of paging.</param>
+        /// <param name="take">Species the number of (max) records to return. This parameter combined with the parameter 'skip' enables use of paging.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<object> SearchLocationItemsAsync(System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string locationReference, string locationName, string locationDescriptionText, System.Collections.Generic.IEnumerable<double> totalBudgetEstimateAmounts, bool? readyForReportingIndicator, string useCode, string plannedActionCode, System.DateTimeOffset? plannedActionEndDateTime, string currentTargetAreaCode, bool? isIncludeParcel, string searchText, string sortField, string sortDir, int? skip, int? take)
+        public System.Threading.Tasks.Task<object> SearchLocationItemsAsync(System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string locationReference, string locationName, string locationDescriptionText, bool? readyForReportingIndicator, string useCode, string plannedActionCode, System.DateTimeOffset? plannedActionEndDateTime, string currentTargetAreaCode, bool? isIncludeParcel, string searchText, int? skip, int? take)
         {
-            return SearchLocationItemsAsync(regionCodes, municipalityCodes, locationReference, locationName, locationDescriptionText, totalBudgetEstimateAmounts, readyForReportingIndicator, useCode, plannedActionCode, plannedActionEndDateTime, currentTargetAreaCode, isIncludeParcel, searchText, sortField, sortDir, skip, take, System.Threading.CancellationToken.None);
+            return SearchLocationItemsAsync(regionCodes, municipalityCodes, locationReference, locationName, locationDescriptionText, readyForReportingIndicator, useCode, plannedActionCode, plannedActionEndDateTime, currentTargetAreaCode, isIncludeParcel, searchText, skip, take, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Returns an array of locations including information like planned actions, pollution causes, projects, status declarations and more.</summary>
-        /// <param name="regionCodes">[MISSING TEXT]</param>
-        /// <param name="municipalityCodes">[MISSING TEXT]</param>
-        /// <param name="locationReference">[MISSING TEXT]</param>
-        /// <param name="locationName">[MISSING TEXT]</param>
-        /// <param name="locationDescriptionText">[MISSING TEXT]</param>
-        /// <param name="totalBudgetEstimateAmounts">[MISSING TEXT]</param>
-        /// <param name="readyForReportingIndicator">[MISSING TEXT]</param>
-        /// <param name="useCode">[MISSING TEXT]</param>
-        /// <param name="plannedActionCode">[MISSING TEXT]</param>
-        /// <param name="plannedActionEndDateTime">[MISSING TEXT]</param>
-        /// <param name="currentTargetAreaCode">[MISSING TEXT]</param>
-        /// <param name="isIncludeParcel">[MISSING TEXT]</param>
-        /// <param name="searchText">[MISSING TEXT]</param>
-        /// <param name="sortField">[MISSING TEXT]</param>
-        /// <param name="sortDir">[MISSING TEXT]</param>
-        /// <param name="skip">[MISSING TEXT]</param>
-        /// <param name="take">[MISSING TEXT]</param>
+        /// <summary>Returns an array of locations including information like planned actions, pollution causes, projects, status declarations and more. Please notice that there is no restriction on number of items that can be returned in the request, but for performance reasons, it is advised that you limit the number of objects using skip and take.</summary>
+        /// <param name="regionCodes">An array of Region Codes. Allowed formats are {1081, 1082, 1083, 1084, 1085}.</param>
+        /// <param name="municipalityCodes">An array of Municipality Codes. Allowed formats are e.g. {101, 147, 151, 153, ...}. You can find all municipality codes here: https://danmarksadresser.dk/adressedata/kodelister/kommunekodeliste/.</param>
+        /// <param name="locationReference">Distinct Reference for a Location. Typical format e.g. {745-00084}. A Location is a Jord-specific term used to refer to a specific area within a Region. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="locationName">Userfriendly Name for a Location. Typical format e.g. {Kobbersmedje i Rebild}. A Location is a Jord-specific term used to refer to a specific area within a Region. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="locationDescriptionText">A detailed userfriendly name for a Location. Typical format e.g. {Ældre Bruntvej 1, 8660 Skanderborg}. A Location is a Jord-specific term used to refer to a specific area within a Region. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="readyForReportingIndicator">When set to TRUE, it will only return locations that are ready for reporting. When set to FALSE, it will only return locations that are not ready for reporting. Do not send any value in order to ignore this filter.</param>
+        /// <param name="useCode">Searches by int (as string) values referring to what the location is being used for. E.g. '17' refers to "Fyld- og losseplads".</param>
+        /// <param name="plannedActionCode">Searches by  (as string) values referring to actions planned on the location. E.g. '05' refers to "Undersøgelse, videregående".</param>
+        /// <param name="plannedActionEndDateTime">Searches for locations which has planned actions that exactly end on same date as the set filter date.</param>
+        /// <param name="currentTargetAreaCode">Searches for locations which has planned actions that exactly end on same date as the set filter date.</param>
+        /// <param name="isIncludeParcel">When set to TRUE, each returned Locations will include all Parcel objects that have been affected by pollution areas (Status Declarations) within it.</param>
+        /// <param name="searchText">The search string of this field will be compared with the fields location reference, location name and location description to see if any of them match.</param>
+        /// <param name="skip">Results are organized in an indexed order.Using the Skip function, the user can decide from which index to start the search.This parameter combined with the parameter 'take' enables use of paging.</param>
+        /// <param name="take">Species the number of (max) records to return. This parameter combined with the parameter 'skip' enables use of paging.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<object> SearchLocationItemsAsync(System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string locationReference, string locationName, string locationDescriptionText, System.Collections.Generic.IEnumerable<double> totalBudgetEstimateAmounts, bool? readyForReportingIndicator, string useCode, string plannedActionCode, System.DateTimeOffset? plannedActionEndDateTime, string currentTargetAreaCode, bool? isIncludeParcel, string searchText, string sortField, string sortDir, int? skip, int? take, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<object> SearchLocationItemsAsync(System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string locationReference, string locationName, string locationDescriptionText, bool? readyForReportingIndicator, string useCode, string plannedActionCode, System.DateTimeOffset? plannedActionEndDateTime, string currentTargetAreaCode, bool? isIncludeParcel, string searchText, int? skip, int? take, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations?");
@@ -375,10 +369,6 @@ namespace Dmp.Jord.Integration.Sample.Rest
             if (locationDescriptionText != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("locationDescriptionText") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationDescriptionText, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (totalBudgetEstimateAmounts != null)
-            {
-                foreach (var item_ in totalBudgetEstimateAmounts) { urlBuilder_.Append(System.Uri.EscapeDataString("totalBudgetEstimateAmounts") + "=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
             }
             if (readyForReportingIndicator != null)
             {
@@ -407,14 +397,6 @@ namespace Dmp.Jord.Integration.Sample.Rest
             if (searchText != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("searchText") + "=").Append(System.Uri.EscapeDataString(ConvertToString(searchText, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (sortField != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("sortField") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sortField, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (sortDir != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("sortDir") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sortDir, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (skip != null)
             {
@@ -597,50 +579,44 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
 
         /// <summary>Returns a location by location reference. You can specifically choose via parameters what information about the location you want to include in response.</summary>
-        /// <param name="locationReferenceQuery">[MISSING TEXT]</param>
-        /// <param name="projectIndicator">[MISSING TEXT]</param>
-        /// <param name="projectPhaseIndicator">[MISSING TEXT]</param>
-        /// <param name="pollutantIndicator">[MISSING TEXT]</param>
-        /// <param name="pollutionCauseIndicator">[MISSING TEXT]</param>
-        /// <param name="plannedActionIndicator">[MISSING TEXT]</param>
-        /// <param name="currentTargetAreaIndicator">[MISSING TEXT]</param>
-        /// <param name="currentUseIndicator">[MISSING TEXT]</param>
-        /// <param name="section8AutorizationIndicator">[MISSING TEXT]</param>
-        /// <param name="parcelIndicator">[MISSING TEXT]</param>
-        /// <param name="statusDeclarationIndicator">[MISSING TEXT]</param>
-        /// <param name="isIncludeParcel">[MISSING TEXT]</param>
+        /// <param name="locationReference">Distinct Reference for a Location. Typical format e.g. {745-00084}. A Location is a Jord-specific term used to refer to a specific area within a Region.</param>
+        /// <param name="projectIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Project objects of the location.</param>
+        /// <param name="projectPhaseIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Project Phase objects of the Project Objects. If set to TRUE it disregards settings of projectIndicator and always returns the Project objects.</param>
+        /// <param name="pollutantIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Pollutant Objects of the Project Phase Objects.</param>
+        /// <param name="pollutionCauseIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Pollution Cause objects of the location.</param>
+        /// <param name="plannedActionIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Planned Action objects of the location.</param>
+        /// <param name="currentTargetAreaIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Current Target Area objects of the location.</param>
+        /// <param name="currentUseIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include current Use Indicator objects of the location.</param>
+        /// <param name="section8AutorizationIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Section 8 Authorization objects of the location.</param>
+        /// <param name="statusDeclarationIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Status Declaration Objects of the location.</param>
+        /// <param name="isIncludeParcel">Boolean setting, which - when set to TRUE - means that the location output object will include Parcel Objects of the location.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<LocationDetailView> GetLocationDetailAsync(string locationReferencePath, string locationReferenceQuery, bool? projectIndicator, bool? projectPhaseIndicator, bool? pollutantIndicator, bool? pollutionCauseIndicator, bool? plannedActionIndicator, bool? currentTargetAreaIndicator, bool? currentUseIndicator, bool? section8AutorizationIndicator, bool? parcelIndicator, bool? statusDeclarationIndicator, bool? isIncludeParcel)
+        public System.Threading.Tasks.Task<LocationDetailView> GetLocationDetailAsync(string locationReference, bool? projectIndicator, bool? projectPhaseIndicator, bool? pollutantIndicator, bool? pollutionCauseIndicator, bool? plannedActionIndicator, bool? currentTargetAreaIndicator, bool? currentUseIndicator, bool? section8AutorizationIndicator, bool? statusDeclarationIndicator, bool? isIncludeParcel)
         {
-            return GetLocationDetailAsync(locationReferencePath, locationReferenceQuery, projectIndicator, projectPhaseIndicator, pollutantIndicator, pollutionCauseIndicator, plannedActionIndicator, currentTargetAreaIndicator, currentUseIndicator, section8AutorizationIndicator, parcelIndicator, statusDeclarationIndicator, isIncludeParcel, System.Threading.CancellationToken.None);
+            return GetLocationDetailAsync(locationReference, projectIndicator, projectPhaseIndicator, pollutantIndicator, pollutionCauseIndicator, plannedActionIndicator, currentTargetAreaIndicator, currentUseIndicator, section8AutorizationIndicator, statusDeclarationIndicator, isIncludeParcel, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Returns a location by location reference. You can specifically choose via parameters what information about the location you want to include in response.</summary>
-        /// <param name="locationReferenceQuery">[MISSING TEXT]</param>
-        /// <param name="projectIndicator">[MISSING TEXT]</param>
-        /// <param name="projectPhaseIndicator">[MISSING TEXT]</param>
-        /// <param name="pollutantIndicator">[MISSING TEXT]</param>
-        /// <param name="pollutionCauseIndicator">[MISSING TEXT]</param>
-        /// <param name="plannedActionIndicator">[MISSING TEXT]</param>
-        /// <param name="currentTargetAreaIndicator">[MISSING TEXT]</param>
-        /// <param name="currentUseIndicator">[MISSING TEXT]</param>
-        /// <param name="section8AutorizationIndicator">[MISSING TEXT]</param>
-        /// <param name="parcelIndicator">[MISSING TEXT]</param>
-        /// <param name="statusDeclarationIndicator">[MISSING TEXT]</param>
-        /// <param name="isIncludeParcel">[MISSING TEXT]</param>
+        /// <param name="locationReference">Distinct Reference for a Location. Typical format e.g. {745-00084}. A Location is a Jord-specific term used to refer to a specific area within a Region.</param>
+        /// <param name="projectIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Project objects of the location.</param>
+        /// <param name="projectPhaseIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Project Phase objects of the Project Objects. If set to TRUE it disregards settings of projectIndicator and always returns the Project objects.</param>
+        /// <param name="pollutantIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Pollutant Objects of the Project Phase Objects.</param>
+        /// <param name="pollutionCauseIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Pollution Cause objects of the location.</param>
+        /// <param name="plannedActionIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Planned Action objects of the location.</param>
+        /// <param name="currentTargetAreaIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Current Target Area objects of the location.</param>
+        /// <param name="currentUseIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include current Use Indicator objects of the location.</param>
+        /// <param name="section8AutorizationIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Section 8 Authorization objects of the location.</param>
+        /// <param name="statusDeclarationIndicator">Boolean setting, which - when set to TRUE - means that the location output object will include Status Declaration Objects of the location.</param>
+        /// <param name="isIncludeParcel">Boolean setting, which - when set to TRUE - means that the location output object will include Parcel Objects of the location.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<LocationDetailView> GetLocationDetailAsync(string locationReferencePath, string locationReferenceQuery, bool? projectIndicator, bool? projectPhaseIndicator, bool? pollutantIndicator, bool? pollutionCauseIndicator, bool? plannedActionIndicator, bool? currentTargetAreaIndicator, bool? currentUseIndicator, bool? section8AutorizationIndicator, bool? parcelIndicator, bool? statusDeclarationIndicator, bool? isIncludeParcel, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<LocationDetailView> GetLocationDetailAsync(string locationReference, bool? projectIndicator, bool? projectPhaseIndicator, bool? pollutantIndicator, bool? pollutionCauseIndicator, bool? plannedActionIndicator, bool? currentTargetAreaIndicator, bool? currentUseIndicator, bool? section8AutorizationIndicator, bool? statusDeclarationIndicator, bool? isIncludeParcel, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/locations/{locationReference}?");
-            urlBuilder_.Replace("{locationReference}", System.Uri.EscapeDataString(ConvertToString(locationReferencePath, System.Globalization.CultureInfo.InvariantCulture)));
-            if (locationReferenceQuery != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("locationReference") + "=").Append(System.Uri.EscapeDataString(ConvertToString(locationReferenceQuery, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
+            urlBuilder_.Replace("{locationReference}", System.Uri.EscapeDataString(ConvertToString(locationReference, System.Globalization.CultureInfo.InvariantCulture)));
             if (projectIndicator != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("projectIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(projectIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -672,10 +648,6 @@ namespace Dmp.Jord.Integration.Sample.Rest
             if (section8AutorizationIndicator != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("section8AutorizationIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(section8AutorizationIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (parcelIndicator != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("parcelIndicator") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parcelIndicator, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (statusDeclarationIndicator != null)
             {
@@ -1224,6 +1196,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
 
         /// <summary>Deletes an existing location by location id.</summary>
+        /// <param name="id">The unique identifier of the location to be deleted.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Guid> DeleteLocationAsync(System.Guid id)
@@ -1233,6 +1206,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Deletes an existing location by location id.</summary>
+        /// <param name="id">The unique identifier of the location to be deleted.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Guid> DeleteLocationAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
@@ -1313,23 +1287,23 @@ namespace Dmp.Jord.Integration.Sample.Rest
             }
         }
 
-        /// <summary>Returns an array of Parcels.</summary>
-        /// <param name="cadastralDistrictIdentifier">[MISSING TEXT]</param>
-        /// <param name="landParcelIdentifier">[MISSING TEXT]</param>
-        /// <param name="locationReference">[MISSING TEXT]</param>
-        /// <param name="regionCodes">[MISSING TEXT]</param>
-        /// <param name="municipalityCodes">[MISSING TEXT]</param>
-        /// <param name="pollutionStatus">[MISSING TEXT]</param>
-        /// <param name="pollutionNuanceStatus">[MISSING TEXT]</param>
-        /// <param name="isUnclean">[MISSING TEXT]</param>
-        /// <param name="includeGeometries">[MISSING TEXT]</param>
-        /// <param name="geometryFormatType">[MISSING TEXT]</param>
-        /// <param name="modifiedDateFrom">[MISSING TEXT]</param>
-        /// <param name="recalculationDateFrom">[MISSING TEXT]</param>
-        /// <param name="sortField">[MISSING TEXT]</param>
-        /// <param name="sortByAscending">[MISSING TEXT]</param>
-        /// <param name="skip">[MISSING TEXT]</param>
-        /// <param name="take">[MISSING TEXT]</param>
+        /// <summary>Returns an array of Parcels. Please notice that there is a restriction of 5000 on number of parcels that can be returned in one request. If you wish to retrieve more than this then use skip and take to loop through the results.</summary>
+        /// <param name="cadastralDistrictIdentifier">(a.k.a. ejerlavskode) a unique value for a cadastral district. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="landParcelIdentifier">(a.k.a. matrikelnummer) a unique parcel value within the cadastral district. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="locationReference">Distinct Reference for a Location. Typical format e.g. {745-00084}. A Location is a Jord-specific term used to refer to a specific area within a Region. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="regionCodes">An array of Region Codes. Allowed formats are {1081, 1082, 1083, 1084, 1085}.</param>
+        /// <param name="municipalityCodes">An array of Municipality Codes. Allowed formats are e.g. {101, 147, 151, 153, ...}. You can find all municipality codes here: https://danmarksadresser.dk/adressedata/kodelister/kommunekodeliste/.</param>
+        /// <param name="pollutionStatus">Seaches by (as string) values referring to what the pollution status of the location is. E.g. '07' refers to "V1 kortlagt".</param>
+        /// <param name="pollutionNuanceStatus">Seaches by (as string) values referring to what the pollution nuance status of the location is. E.g. '01' refers to "F0 Nuanceret".</param>
+        /// <param name="isUnclean">Parcel objects refer to Status Declarations (pollution areas) that are part of the Location objects. It is possible that the Status Declaration references of Parcels can get out of sync with the Status Declaration objects of locations. By setting this filter to TRUE, it is possible to get returned only Parcels, which now are referencing Status Declarations that do not exist in the database yet. This can help the Regions detected Parcels and/or Locations that they need to resend to the DKJord service.</param>
+        /// <param name="includeGeometries">Parcels contain an array of Status Declarations that were used to analyze and decide the pollution status of the Parcel. Set the includeGeometries parameter to TRUE if you want to return the Status Declaration's geometries in the output objects. This can be used to show the pollution areas together with the Parcel on a map.</param>
+        /// <param name="geometryFormatType">If you have chosen to include Status Declaration geometries in the result, then you can use this parameter to specify the format that you want the geometry returned in. Options are: Gml, Shape, Wkt.</param>
+        /// <param name="modifiedDateFrom">makes sure to just return Parcels where the content of the Parcels were changed after the specified date. This parameter is useful when third parties want to keep the Parcels in DKJord in sync with Parcels in their own database. By using this date filter, they can make sure to just sync Parcels that were changed since last time the service was called.</param>
+        /// <param name="recalculationDateFrom">makes sure to just return Parcels where the analysis results of the Parcel were changed after the specified date.</param>
+        /// <param name="sortField">Allows sorting the results by any of the following enums (referencing the applicable output value): CadastralDistrictIdentifier, LandParcelIdentifier, RegionCode, MunicipalityCode, PollutionStatus, PollutionNuanceStatus</param>
+        /// <param name="sortByAscending">Combines with the sortField to decide whether the results are returned by sorting or descending order. Set to TRUE for Ascending. Set to FALSE for Descending.</param>
+        /// <param name="skip">Results are organized in an indexed order.Using the Skip function, the user can decide from which index to start the search.This parameter combined with the parameter 'take' enables use of paging.</param>
+        /// <param name="take">Species the number of (max) records to return. This parameter combined with the parameter 'skip' enables use of paging.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SearchView_1OfOfParcelItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null> SearchParcelsAsync(int? cadastralDistrictIdentifier, string landParcelIdentifier, string locationReference, System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string pollutionStatus, string pollutionNuanceStatus, bool? isUnclean, bool? includeGeometries, GeometryFormatType? geometryFormatType, System.DateTimeOffset? modifiedDateFrom, System.DateTimeOffset? recalculationDateFrom, ParcelSortField? sortField, bool? sortByAscending, int? skip, int? take)
@@ -1338,23 +1312,23 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Returns an array of Parcels.</summary>
-        /// <param name="cadastralDistrictIdentifier">[MISSING TEXT]</param>
-        /// <param name="landParcelIdentifier">[MISSING TEXT]</param>
-        /// <param name="locationReference">[MISSING TEXT]</param>
-        /// <param name="regionCodes">[MISSING TEXT]</param>
-        /// <param name="municipalityCodes">[MISSING TEXT]</param>
-        /// <param name="pollutionStatus">[MISSING TEXT]</param>
-        /// <param name="pollutionNuanceStatus">[MISSING TEXT]</param>
-        /// <param name="isUnclean">[MISSING TEXT]</param>
-        /// <param name="includeGeometries">[MISSING TEXT]</param>
-        /// <param name="geometryFormatType">[MISSING TEXT]</param>
-        /// <param name="modifiedDateFrom">[MISSING TEXT]</param>
-        /// <param name="recalculationDateFrom">[MISSING TEXT]</param>
-        /// <param name="sortField">[MISSING TEXT]</param>
-        /// <param name="sortByAscending">[MISSING TEXT]</param>
-        /// <param name="skip">[MISSING TEXT]</param>
-        /// <param name="take">[MISSING TEXT]</param>
+        /// <summary>Returns an array of Parcels. Please notice that there is a restriction of 5000 on number of parcels that can be returned in one request. If you wish to retrieve more than this then use skip and take to loop through the results.</summary>
+        /// <param name="cadastralDistrictIdentifier">(a.k.a. ejerlavskode) a unique value for a cadastral district. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="landParcelIdentifier">(a.k.a. matrikelnummer) a unique parcel value within the cadastral district. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="locationReference">Distinct Reference for a Location. Typical format e.g. {745-00084}. A Location is a Jord-specific term used to refer to a specific area within a Region. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="regionCodes">An array of Region Codes. Allowed formats are {1081, 1082, 1083, 1084, 1085}.</param>
+        /// <param name="municipalityCodes">An array of Municipality Codes. Allowed formats are e.g. {101, 147, 151, 153, ...}. You can find all municipality codes here: https://danmarksadresser.dk/adressedata/kodelister/kommunekodeliste/.</param>
+        /// <param name="pollutionStatus">Seaches by (as string) values referring to what the pollution status of the location is. E.g. '07' refers to "V1 kortlagt".</param>
+        /// <param name="pollutionNuanceStatus">Seaches by (as string) values referring to what the pollution nuance status of the location is. E.g. '01' refers to "F0 Nuanceret".</param>
+        /// <param name="isUnclean">Parcel objects refer to Status Declarations (pollution areas) that are part of the Location objects. It is possible that the Status Declaration references of Parcels can get out of sync with the Status Declaration objects of locations. By setting this filter to TRUE, it is possible to get returned only Parcels, which now are referencing Status Declarations that do not exist in the database yet. This can help the Regions detected Parcels and/or Locations that they need to resend to the DKJord service.</param>
+        /// <param name="includeGeometries">Parcels contain an array of Status Declarations that were used to analyze and decide the pollution status of the Parcel. Set the includeGeometries parameter to TRUE if you want to return the Status Declaration's geometries in the output objects. This can be used to show the pollution areas together with the Parcel on a map.</param>
+        /// <param name="geometryFormatType">If you have chosen to include Status Declaration geometries in the result, then you can use this parameter to specify the format that you want the geometry returned in. Options are: Gml, Shape, Wkt.</param>
+        /// <param name="modifiedDateFrom">makes sure to just return Parcels where the content of the Parcels were changed after the specified date. This parameter is useful when third parties want to keep the Parcels in DKJord in sync with Parcels in their own database. By using this date filter, they can make sure to just sync Parcels that were changed since last time the service was called.</param>
+        /// <param name="recalculationDateFrom">makes sure to just return Parcels where the analysis results of the Parcel were changed after the specified date.</param>
+        /// <param name="sortField">Allows sorting the results by any of the following enums (referencing the applicable output value): CadastralDistrictIdentifier, LandParcelIdentifier, RegionCode, MunicipalityCode, PollutionStatus, PollutionNuanceStatus</param>
+        /// <param name="sortByAscending">Combines with the sortField to decide whether the results are returned by sorting or descending order. Set to TRUE for Ascending. Set to FALSE for Descending.</param>
+        /// <param name="skip">Results are organized in an indexed order.Using the Skip function, the user can decide from which index to start the search.This parameter combined with the parameter 'take' enables use of paging.</param>
+        /// <param name="take">Species the number of (max) records to return. This parameter combined with the parameter 'skip' enables use of paging.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SearchView_1OfOfParcelItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null> SearchParcelsAsync(int? cadastralDistrictIdentifier, string landParcelIdentifier, string locationReference, System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string pollutionStatus, string pollutionNuanceStatus, bool? isUnclean, bool? includeGeometries, GeometryFormatType? geometryFormatType, System.DateTimeOffset? modifiedDateFrom, System.DateTimeOffset? recalculationDateFrom, ParcelSortField? sortField, bool? sortByAscending, int? skip, int? take, System.Threading.CancellationToken cancellationToken)
@@ -1729,46 +1703,44 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
 
         /// <summary>Returns an array of histories of Parcels.</summary>
-        /// <param name="cadastralDistrictIdentifier">[MISSING TEXT]</param>
-        /// <param name="landParcelIdentifier">[MISSING TEXT]</param>
-        /// <param name="locationReference">[MISSING TEXT]</param>
-        /// <param name="regionCodes">[MISSING TEXT]</param>
-        /// <param name="municipalityCodes">[MISSING TEXT]</param>
-        /// <param name="pollutionStatus">[MISSING TEXT]</param>
-        /// <param name="pollutionNuanceStatus">[MISSING TEXT]</param>
-        /// <param name="geometryFormatType">[MISSING TEXT]</param>
-        /// <param name="modifiedDateFrom">[MISSING TEXT]</param>
-        /// <param name="recalculationDateFrom">[MISSING TEXT]</param>
-        /// <param name="sortField">[MISSING TEXT]</param>
-        /// <param name="sortByAscending">[MISSING TEXT]</param>
-        /// <param name="skip">[MISSING TEXT]</param>
-        /// <param name="take">[MISSING TEXT]</param>
+        /// <param name="cadastralDistrictIdentifier">(a.k.a. ejerlavskode) a unique value for a cadastral district. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="landParcelIdentifier">(a.k.a. matrikelnummer) a unique parcel value within the cadastral district. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="locationReference">Distinct Reference for a Location. Typical format e.g. {745-00084}. A Location is a Jord-specific term used to refer to a specific area within a Region. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="regionCodes">An array of Region Codes. Allowed formats are {1081, 1082, 1083, 1084, 1085}.</param>
+        /// <param name="municipalityCodes">An array of Municipality Codes. Allowed formats are e.g. {101, 147, 151, 153, ...}. You can find all municipality codes here: https://danmarksadresser.dk/adressedata/kodelister/kommunekodeliste/.</param>
+        /// <param name="pollutionStatus">Seaches by (as string) values referring to what the pollution status of the location is. E.g. '07' refers to "V1 kortlagt".</param>
+        /// <param name="pollutionNuanceStatus">Seaches by (as string) values referring to what the pollution nuance status of the location is. E.g. '01' refers to "F0 Nuanceret".</param>
+        /// <param name="modifiedDateFrom">makes sure to just return Parcels where the content of the Parcels were changed after the specified date. This parameter is useful when third parties want to keep the Parcels in DKJord in sync with Parcels in their own database. By using this date filter, they can make sure to just sync Parcels that were changed since last time the service was called.</param>
+        /// <param name="recalculationDateFrom">makes sure to just return Parcels where the analysis results of the Parcel were changed after the specified date.</param>
+        /// <param name="sortField">Allows sorting the results by any of the following enums (referencing the applicable output value): CadastralDistrictIdentifier, LandParcelIdentifier, RegionCode, MunicipalityCode, PollutionStatus, PollutionNuanceStatus</param>
+        /// <param name="sortByAscending">Combines with the sortField to decide whether the results are returned by sorting or descending order. Set to TRUE for Ascending. Set to FALSE for Descending.</param>
+        /// <param name="skip">Results are organized in an indexed order.Using the Skip function, the user can decide from which index to start the search.This parameter combined with the parameter 'take' enables use of paging.</param>
+        /// <param name="take">Specifies the number of (max) records to return. This parameter combined with the parameter 'skip' enables use of paging.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<SearchView_1OfOfParcelHistoryItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null> SearchParcelHistoriesAsync(int? cadastralDistrictIdentifier, string landParcelIdentifier, string locationReference, System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string pollutionStatus, string pollutionNuanceStatus, GeometryFormatType? geometryFormatType, System.DateTimeOffset? modifiedDateFrom, System.DateTimeOffset? recalculationDateFrom, ParcelSortField? sortField, bool? sortByAscending, int? skip, int? take)
+        public System.Threading.Tasks.Task<SearchView_1OfOfParcelHistoryItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null> SearchParcelHistoriesAsync(int? cadastralDistrictIdentifier, string landParcelIdentifier, string locationReference, System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string pollutionStatus, string pollutionNuanceStatus, System.DateTimeOffset? modifiedDateFrom, System.DateTimeOffset? recalculationDateFrom, ParcelSortField? sortField, bool? sortByAscending, int? skip, int? take)
         {
-            return SearchParcelHistoriesAsync(cadastralDistrictIdentifier, landParcelIdentifier, locationReference, regionCodes, municipalityCodes, pollutionStatus, pollutionNuanceStatus, geometryFormatType, modifiedDateFrom, recalculationDateFrom, sortField, sortByAscending, skip, take, System.Threading.CancellationToken.None);
+            return SearchParcelHistoriesAsync(cadastralDistrictIdentifier, landParcelIdentifier, locationReference, regionCodes, municipalityCodes, pollutionStatus, pollutionNuanceStatus, modifiedDateFrom, recalculationDateFrom, sortField, sortByAscending, skip, take, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Returns an array of histories of Parcels.</summary>
-        /// <param name="cadastralDistrictIdentifier">[MISSING TEXT]</param>
-        /// <param name="landParcelIdentifier">[MISSING TEXT]</param>
-        /// <param name="locationReference">[MISSING TEXT]</param>
-        /// <param name="regionCodes">[MISSING TEXT]</param>
-        /// <param name="municipalityCodes">[MISSING TEXT]</param>
-        /// <param name="pollutionStatus">[MISSING TEXT]</param>
-        /// <param name="pollutionNuanceStatus">[MISSING TEXT]</param>
-        /// <param name="geometryFormatType">[MISSING TEXT]</param>
-        /// <param name="modifiedDateFrom">[MISSING TEXT]</param>
-        /// <param name="recalculationDateFrom">[MISSING TEXT]</param>
-        /// <param name="sortField">[MISSING TEXT]</param>
-        /// <param name="sortByAscending">[MISSING TEXT]</param>
-        /// <param name="skip">[MISSING TEXT]</param>
-        /// <param name="take">[MISSING TEXT]</param>
+        /// <param name="cadastralDistrictIdentifier">(a.k.a. ejerlavskode) a unique value for a cadastral district. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="landParcelIdentifier">(a.k.a. matrikelnummer) a unique parcel value within the cadastral district. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="locationReference">Distinct Reference for a Location. Typical format e.g. {745-00084}. A Location is a Jord-specific term used to refer to a specific area within a Region. Search value must be exactly the same as data value for object to be returned.</param>
+        /// <param name="regionCodes">An array of Region Codes. Allowed formats are {1081, 1082, 1083, 1084, 1085}.</param>
+        /// <param name="municipalityCodes">An array of Municipality Codes. Allowed formats are e.g. {101, 147, 151, 153, ...}. You can find all municipality codes here: https://danmarksadresser.dk/adressedata/kodelister/kommunekodeliste/.</param>
+        /// <param name="pollutionStatus">Seaches by (as string) values referring to what the pollution status of the location is. E.g. '07' refers to "V1 kortlagt".</param>
+        /// <param name="pollutionNuanceStatus">Seaches by (as string) values referring to what the pollution nuance status of the location is. E.g. '01' refers to "F0 Nuanceret".</param>
+        /// <param name="modifiedDateFrom">makes sure to just return Parcels where the content of the Parcels were changed after the specified date. This parameter is useful when third parties want to keep the Parcels in DKJord in sync with Parcels in their own database. By using this date filter, they can make sure to just sync Parcels that were changed since last time the service was called.</param>
+        /// <param name="recalculationDateFrom">makes sure to just return Parcels where the analysis results of the Parcel were changed after the specified date.</param>
+        /// <param name="sortField">Allows sorting the results by any of the following enums (referencing the applicable output value): CadastralDistrictIdentifier, LandParcelIdentifier, RegionCode, MunicipalityCode, PollutionStatus, PollutionNuanceStatus</param>
+        /// <param name="sortByAscending">Combines with the sortField to decide whether the results are returned by sorting or descending order. Set to TRUE for Ascending. Set to FALSE for Descending.</param>
+        /// <param name="skip">Results are organized in an indexed order.Using the Skip function, the user can decide from which index to start the search.This parameter combined with the parameter 'take' enables use of paging.</param>
+        /// <param name="take">Specifies the number of (max) records to return. This parameter combined with the parameter 'skip' enables use of paging.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<SearchView_1OfOfParcelHistoryItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null> SearchParcelHistoriesAsync(int? cadastralDistrictIdentifier, string landParcelIdentifier, string locationReference, System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string pollutionStatus, string pollutionNuanceStatus, GeometryFormatType? geometryFormatType, System.DateTimeOffset? modifiedDateFrom, System.DateTimeOffset? recalculationDateFrom, ParcelSortField? sortField, bool? sortByAscending, int? skip, int? take, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<SearchView_1OfOfParcelHistoryItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null> SearchParcelHistoriesAsync(int? cadastralDistrictIdentifier, string landParcelIdentifier, string locationReference, System.Collections.Generic.IEnumerable<int> regionCodes, System.Collections.Generic.IEnumerable<int> municipalityCodes, string pollutionStatus, string pollutionNuanceStatus, System.DateTimeOffset? modifiedDateFrom, System.DateTimeOffset? recalculationDateFrom, ParcelSortField? sortField, bool? sortByAscending, int? skip, int? take, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/parcels/histories?");
@@ -1799,10 +1771,6 @@ namespace Dmp.Jord.Integration.Sample.Rest
             if (pollutionNuanceStatus != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("pollutionNuanceStatus") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pollutionNuanceStatus, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (geometryFormatType != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("geometryFormatType") + "=").Append(System.Uri.EscapeDataString(ConvertToString(geometryFormatType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (modifiedDateFrom != null)
             {
@@ -2115,7 +2083,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class UserInfo
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2139,8 +2107,8 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    /// <summary>[MISSING TEXT]</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    /// <summary>Object containing the municipality code (Allowed formats are e.g. {101, 147, 151, 153, ...}. You can find all municipality codes here:  https://danmarksadresser.dk/adressedata/kodelister/kommunekodeliste/.), street code and street building identifier (these information can be retrieved from BBR).</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class AddressAccess
     {
         /// <summary>[MISSING TEXT]</summary>
@@ -2159,7 +2127,8 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    /// <summary>Object containing the actions that are planned on the location. Properties of this object are a unique ID, a planned action code (e.g. "06" means "Genbrug af metalaffaldsprodukter"), and an end date for completing the action.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class PlannedAction
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2175,7 +2144,8 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    /// <summary>Object containing a list of the reasons that there exists pollution on the location. Properties of this object are a unique ID, a cause code (e.g. "37.10.00" means "Tilsyn, kommune"), an array of Pollution Activity Codes (e.g. "033" means "Imprægnering"), and a start date and end date for the pollution cause.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class PollutionCause
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2197,7 +2167,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Geometry
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2215,7 +2185,8 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    /// <summary>Objects describing the types of pollutants found on the polluted areas on the location. Properties of this object are a unique ID, pollutant component code (e.g. '3020' refers to "2-Naphtol"), contaminated media code (e.g. '02' refers to "Grundvand"), pollution concentration amount, and unit that this amount was measured in (e.g. "ml").</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Pollutant
     {
         [Newtonsoft.Json.JsonProperty("pollutantComponentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2239,7 +2210,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Treatment
     {
         [Newtonsoft.Json.JsonProperty("treatmentStartDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2267,7 +2238,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class ProjectPhase
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2302,21 +2273,8 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Cost
-    {
-        [Newtonsoft.Json.JsonProperty("costYearIdentifier", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(1900, 9999)]
-        public int CostYearIdentifier { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("costAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(0D, double.MaxValue)]
-        public double? CostAmount { get; set; }
-
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    /// <summary>Complex object containing information of projects (research, cleaning, etc)  undertaken on the location. Properties of this object are a unique ID, a project number identifier (index of project within the location), start and end dates, legal framewoork codes (e.g. '01' refers to "Depotlovens paragraf 7"), array of target area codes (e.g. '11' refers to "Overfladevand".), payer code (e.g. '04' refers to "Grundejer"), and an array of complex project phases objects that goes into even more details with the projects being carried out.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Project
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2341,22 +2299,17 @@ namespace Dmp.Jord.Integration.Sample.Rest
         [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string PayerCode { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("pastCostAmount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double PastCostAmount { get; set; }
-
         [Newtonsoft.Json.JsonProperty("currentTargetAreaCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> CurrentTargetAreaCodes { get; set; }
 
         [Newtonsoft.Json.JsonProperty("projectPhases", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<ProjectPhase> ProjectPhases { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("costs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<Cost> Costs { get; set; }
-
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    /// <summary>Object explaining the authorisations that has been given on the location in regards to construction work. Properties of this object are a unique ID, the size of the applicable area (m2), the date the application was made, the use code of the area (e.g. '10' refers to "Sommerhuse") and the justification code for getting the authorization (e.g. '05' refers to "Fejlkortlagt").</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Section8Authorization
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2380,7 +2333,8 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    /// <summary>Objects containing the areas on the location where analysis has been carried out and possibly pollution has been identified. Properties of this object are a unique ID, a date for when the pollution was idenfied, a date for when it was qualified, a date for when a V2 study was undertaken, a justification code (e.g. '06' refers to "Lettere forurenet jord"), a pollutionQualificationCode (e.g. '02' refers to "F1 Nuanceret"), a pollution status code (e.g. '07' refers to "V1 kortlagt") and finally the actual geometrical objects mapping the area(s).</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class StatusDeclaration
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2399,17 +2353,14 @@ namespace Dmp.Jord.Integration.Sample.Rest
         [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string JustificationCode { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("pollutionQualificationCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("pollutionNuanceStatusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(10)]
-        public string PollutionQualificationCode { get; set; }
+        public string PollutionNuanceStatusCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("pollutionStatusCode", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(10)]
         public string PollutionStatusCode { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("areaMeasure", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? AreaMeasure { get; set; }
 
         [Newtonsoft.Json.JsonProperty("geometries", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Geometry> Geometries { get; set; }
@@ -2417,26 +2368,26 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class CreateLocationCommand
     {
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Distinct Reference for a Location. Typical format e.g. {745-00084}. A Location is a Jord-specific term used to refer to a specific area within a Region.</summary>
         [Newtonsoft.Json.JsonProperty("locationReference", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(9)]
         public string LocationReference { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Userfriendly Name for a Location. Typical format e.g. {Kobbersmedje i Rebild}. A Location is a Jord-specific term used to refer to a specific area within a Region.</summary>
         [Newtonsoft.Json.JsonProperty("locationName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(2000)]
         public string LocationName { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>A detailed userfriendly name for a Location. Typical format e.g. {Ældre Bruntvej 1, 8660 Skanderborg}. A Location is a Jord-specific term used to refer to a specific area within a Region.</summary>
         [Newtonsoft.Json.JsonProperty("locationDescriptionText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(2000)]
         public string LocationDescriptionText { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Region code to which the location belongs. Allowed formats are {1081, 1082, 1083, 1084, 1085}.</summary>
         [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string RegionCode { get; set; }
@@ -2445,64 +2396,56 @@ namespace Dmp.Jord.Integration.Sample.Rest
         [System.ComponentModel.DataAnnotations.Required]
         public AddressAccess AddressAccess { get; set; } = new AddressAccess();
 
-        /// <summary>[MISSING TEXT]</summary>
-        [Newtonsoft.Json.JsonProperty("totalBudgetEstimateAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? TotalBudgetEstimateAmount { get; set; }
-
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Set to TRUE if the location is ready to be reported publicly. **</summary>
         [Newtonsoft.Json.JsonProperty("readyForReportingIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ReadyForReportingIndicator { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Receives a code value (format is e.g. '07' or '17') which each represent the current pollution status of the location as decided by the responsible region. The full list of codes can be found here: **.</summary>
         [Newtonsoft.Json.JsonProperty("pollutionStatusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PollutionStatusCode { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Set to TRUE if you want to be able to register a code on this location that has already expired. Some codes are in the database registered with an expiration date. After this date this boolean setting needs to be set to TRUE before the expired codes can be used.</summary>
         [Newtonsoft.Json.JsonProperty("allowExpiredCodesIndicator", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool AllowExpiredCodesIndicator { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
-        [Newtonsoft.Json.JsonProperty("allowKnowledgeLevelCreateIndicator", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool AllowKnowledgeLevelCreateIndicator { get; set; }
-
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Array of values referring to what the location is being used for. E.g. '17' refers to "Fyld- og losseplads". The full list of codes can be found here: **</summary>
         [Newtonsoft.Json.JsonProperty("useCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> UseCodes { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Object containing the actions that are planned on the location. Properties of this object are a unique ID, a planned action code (e.g. "06" means "Genbrug af metalaffaldsprodukter"), and an end date for completing the action.</summary>
         [Newtonsoft.Json.JsonProperty("plannedActions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<PlannedAction> PlannedActions { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Object containing a list of the reasons that there exists pollution on the location. Properties of this object are a unique ID, a cause code (e.g. "37.10.00" means "Tilsyn, kommune"), an array of Pollution Activity Codes (e.g. "033" means "Imprægnering"), and a start date and end date for the pollution cause.</summary>
         [Newtonsoft.Json.JsonProperty("pollutionCauses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<PollutionCause> PollutionCauses { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Array of values referring to any areas in the location that is especially vulnerable to pollution. E.g. '11' refers to "Overfladevand". The full list of codes can be found here: **</summary>
         [Newtonsoft.Json.JsonProperty("currentTargetAreaCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> CurrentTargetAreaCodes { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Complex object containing information of projects (research, cleaning, etc)  undertaken on the location. Properties of this object are a unique ID, a project number identifier (index of project within the location), start and end dates, legal framewoork codes (e.g. '01' refers to "Depotlovens paragraf 7"), array of target area codes (e.g. '11' refers to "Overfladevand".), payer code (e.g. '04' refers to "Grundejer"), and an array of complex project phases objects that goes into even more details with the projects being carried out.</summary>
         [Newtonsoft.Json.JsonProperty("projects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Project> Projects { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Object explaining the authorisations that has been given on the location in regards to construction work. Properties of this object are a unique ID, the size of the applicable area (m2), the date the application was made, the use code of the area (e.g. '10' refers to "Sommerhuse") and the justification code for getting the authorization (e.g. '05' refers to "Fejlkortlagt").</summary>
         [Newtonsoft.Json.JsonProperty("section8Authorizations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Section8Authorization> Section8Authorizations { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Objects containing the areas on the location where analysis has been carried out and possibly pollution has been identified. Properties of this object are a unique ID, a date for when the pollution was idenfied, a date for when it was qualified, a date for when a V2 study was undertaken, a justification code (e.g. '06' refers to "Lettere forurenet jord"), a pollutionNuanceStatusCode (e.g. '02' refers to "F1 Nuanceret"), a pollution status code (e.g. '07' refers to "V1 kortlagt") and finally the actual geometrical objects mapping the area(s).</summary>
         [Newtonsoft.Json.JsonProperty("statusDeclarations", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.MinLength(1)]
         public System.Collections.Generic.ICollection<StatusDeclaration> StatusDeclarations { get; set; } = new System.Collections.ObjectModel.Collection<StatusDeclaration>();
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Objects describing the types of pollutants found on the polluted areas on the location. Properties of this object are a unique ID, pollutant component code (e.g. '3020' refers to "2-Naphtol"), contaminated media code (e.g. '02' refers to "Grundvand"), pollution concentration amount, and unit that this amount was measured in (e.g. "ml").</summary>
         [Newtonsoft.Json.JsonProperty("pollutants", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Pollutant> Pollutants { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class MATRLandParcelIdentification
     {
         [Newtonsoft.Json.JsonProperty("cadastralDistrictName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2521,7 +2464,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Parcel
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2541,9 +2484,9 @@ namespace Dmp.Jord.Integration.Sample.Rest
         [Newtonsoft.Json.JsonProperty("pollutionPartialIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? PollutionPartialIndicator { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("pollutionNuanceStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("pollutionNuanceStatusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(10)]
-        public string PollutionNuanceStatus { get; set; }
+        public string PollutionNuanceStatusCode { get; set; }
 
         [Newtonsoft.Json.JsonProperty("recalculationDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset RecalculationDate { get; set; }
@@ -2557,7 +2500,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class LocationDetailView
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2574,9 +2517,6 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
         [Newtonsoft.Json.JsonProperty("locationDescriptionText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LocationDescriptionText { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("totalBudgetEstimateAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? TotalBudgetEstimateAmount { get; set; }
 
         [Newtonsoft.Json.JsonProperty("readyForReportingIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ReadyForReportingIndicator { get; set; }
@@ -2617,7 +2557,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class LandfillPollutantItem
     {
         [Newtonsoft.Json.JsonProperty("pollutantCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2641,26 +2581,26 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class UpdateLocationCommand
     {
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Distinct Reference for a Location. Typical format e.g. {745-00084}. A Location is a Jord-specific term used to refer to a specific area within a Region.</summary>
         [Newtonsoft.Json.JsonProperty("locationReference", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(9)]
         public string LocationReference { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Userfriendly Name for a Location. Typical format e.g. {Kobbersmedje i Rebild}. A Location is a Jord-specific term used to refer to a specific area within a Region.</summary>
         [Newtonsoft.Json.JsonProperty("locationName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(2000)]
         public string LocationName { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>A detailed userfriendly name for a Location. Typical format e.g. {Ældre Bruntvej 1, 8660 Skanderborg}. A Location is a Jord-specific term used to refer to a specific area within a Region.</summary>
         [Newtonsoft.Json.JsonProperty("locationDescriptionText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(2000)]
         public string LocationDescriptionText { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Region code to which the location belongs. Allowed formats are {1081, 1082, 1083, 1084, 1085}.</summary>
         [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string RegionCode { get; set; }
@@ -2669,64 +2609,56 @@ namespace Dmp.Jord.Integration.Sample.Rest
         [System.ComponentModel.DataAnnotations.Required]
         public AddressAccess AddressAccess { get; set; } = new AddressAccess();
 
-        /// <summary>[MISSING TEXT]</summary>
-        [Newtonsoft.Json.JsonProperty("totalBudgetEstimateAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? TotalBudgetEstimateAmount { get; set; }
-
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Set to TRUE if the location is ready to be reported publicly. **</summary>
         [Newtonsoft.Json.JsonProperty("readyForReportingIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ReadyForReportingIndicator { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Receives a code value (format is e.g. '07' or '17') which each represent the current pollution status of the location as decided by the responsible region. The full list of codes can be found here: **</summary>
         [Newtonsoft.Json.JsonProperty("pollutionStatusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PollutionStatusCode { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Array of values referring to what the location is being used for. E.g. '17' refers to "Fyld- og losseplads". The full list of codes can be found here: **</summary>
         [Newtonsoft.Json.JsonProperty("useCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> UseCodes { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Object containing the actions that are planned on the location. Properties of this object are a unique ID, a planned action code (e.g. "06" means "Genbrug af metalaffaldsprodukter"), and an end date for completing the action.</summary>
         [Newtonsoft.Json.JsonProperty("plannedActions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<PlannedAction> PlannedActions { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Object containing a list of the reasons that there exists pollution on the location. Properties of this object are a unique ID, a cause code (e.g. "37.10.00" means "Tilsyn, kommune"), an array of Pollution Activity Codes (e.g. "033" means "Imprægnering"), and a start date and end date for the pollution cause.</summary>
         [Newtonsoft.Json.JsonProperty("pollutionCauses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<PollutionCause> PollutionCauses { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>AArray of values referring to any areas in the location that is especially vulnerable to pollution. E.g. '11' refers to "Overfladevand". The full list of codes can be found here: **</summary>
         [Newtonsoft.Json.JsonProperty("currentTargetAreaCodes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> CurrentTargetAreaCodes { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Complex object containing information of projects (research, cleaning, etc)  undertaken on the location. Properties of this object are a unique ID, a project number identifier (index of project within the location), start and end dates, legal framewoork codes (e.g. '01' refers to "Depotlovens paragraf 7"), array of target area codes (e.g. '11' refers to "Overfladevand".), payer code (e.g. '04' refers to "Grundejer"), and an array of complex project phases objects that goes into even more details with the projects being carried out.</summary>
         [Newtonsoft.Json.JsonProperty("projects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Project> Projects { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Object explaining the authorisations that has been given on the location in regards to construction work. Properties of this object are a unique ID, the size of the applicable area (m2), the date the application was made, the use code of the area (e.g. '10' refers to "Sommerhuse") and the justification code for getting the authorization (e.g. '05' refers to "Fejlkortlagt").</summary>
         [Newtonsoft.Json.JsonProperty("section8Authorizations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Section8Authorization> Section8Authorizations { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Objects containing the areas on the location where analysis has been carried out and possibly pollution has been identified. Properties of this object are a unique ID, a date for when the pollution was idenfied, a date for when it was qualified, a date for when a V2 study was undertaken, a justification code (e.g. '06' refers to "Lettere forurenet jord"), a pollutionNuanceStatusCode (e.g. '02' refers to "F1 Nuanceret"), a pollution status code (e.g. '07' refers to "V1 kortlagt") and finally the actual geometrical objects mapping the area(s).</summary>
         [Newtonsoft.Json.JsonProperty("statusDeclarations", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.MinLength(1)]
         public System.Collections.Generic.ICollection<StatusDeclaration> StatusDeclarations { get; set; } = new System.Collections.ObjectModel.Collection<StatusDeclaration>();
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Objects describing the types of pollutants found on the polluted areas on the location. Properties of this object are a unique ID, pollutant component code (e.g. '3020' refers to "2-Naphtol"), contaminated media code (e.g. '02' refers to "Grundvand"), pollution concentration amount, and unit that this amount was measured in (e.g. "ml").</summary>
         [Newtonsoft.Json.JsonProperty("pollutants", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<Pollutant> Pollutants { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Set to TRUE if you want to be able to register a code on this location that has already expired. Some codes are in the database registered with an expiration date. After this date this boolean setting needs to be set to TRUE before the expired codes can be used.</summary>
         [Newtonsoft.Json.JsonProperty("allowExpiredCodesIndicator", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool AllowExpiredCodesIndicator { get; set; }
-
-        /// <summary>[MISSING TEXT]</summary>
-        [Newtonsoft.Json.JsonProperty("allowKnowledgeLevelCreateIndicator", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool AllowKnowledgeLevelCreateIndicator { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public enum GeometryFormatType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"Gml")]
@@ -2740,7 +2672,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public enum ParcelSortField
     {
         [System.Runtime.Serialization.EnumMember(Value = @"CadastralDistrictIdentifier")]
@@ -2763,7 +2695,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public enum PrecisionModels
     {
         _0 = 0,
@@ -2774,7 +2706,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class PrecisionModel
     {
         [Newtonsoft.Json.JsonProperty("isFloating", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2792,7 +2724,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public enum Ordinates
     {
         _0 = 0,
@@ -2877,7 +2809,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class CoordinateSequenceFactory
     {
         [Newtonsoft.Json.JsonProperty("ordinates", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2886,7 +2818,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class GeometryFactory
     {
         [Newtonsoft.Json.JsonProperty("precisionModel", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2901,7 +2833,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public enum OgcGeometryType
     {
         _1 = 1,
@@ -2938,7 +2870,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Coordinate
     {
         [Newtonsoft.Json.JsonProperty("x", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2959,7 +2891,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class CoordinateSequence
     {
         [Newtonsoft.Json.JsonProperty("dimension", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2992,7 +2924,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public enum Dimension
     {
         _0 = 0,
@@ -3009,7 +2941,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Envelope
     {
         [Newtonsoft.Json.JsonProperty("isNull", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3048,7 +2980,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Point
     {
         [Newtonsoft.Json.JsonProperty("coordinateSequence", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3141,7 +3073,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Geometry2
     {
         [Newtonsoft.Json.JsonProperty("factory", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3219,7 +3151,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class StatusDeclarationXGeometry
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3240,7 +3172,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class ParcelXStatusDeclarationViewItem
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3255,7 +3187,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class ParcelItem
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3300,7 +3232,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class SearchView_1OfOfParcelItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null
     {
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3312,7 +3244,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class ProblemDetails
     {
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3342,26 +3274,26 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class DeleteParcelRequest
     {
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>(a.k.a. ejerlavskode) a unique value for a cadastral district.</summary>
         [Newtonsoft.Json.JsonProperty("cadastralDistrictIdentifier", Required = Newtonsoft.Json.Required.Always)]
         public int CadastralDistrictIdentifier { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>(a.k.a. matrikelnummer) a unique parcel value within the cadastral district.</summary>
         [Newtonsoft.Json.JsonProperty("landParcelIdentifier", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LandParcelIdentifier { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>The Region Code where the Parcel is placed. Allowed formats are {1081, 1082, 1083, 1084, 1085}.</summary>
         [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.Always)]
         public int RegionCode { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class ParcelXStatusDeclarationComandItem
     {
         [Newtonsoft.Json.JsonProperty("statusDeclarationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3370,57 +3302,53 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class CreateParcelCommand
     {
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>(a.k.a. ejerlavskode) a unique value for a cadastral district.</summary>
         [Newtonsoft.Json.JsonProperty("cadastralDistrictIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CadastralDistrictIdentifier { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>(a.k.a. matrikelnummer) a unique parcel value within the cadastral district.</summary>
         [Newtonsoft.Json.JsonProperty("landParcelIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LandParcelIdentifier { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>bool setting indicating whether a building exists on the Parcel.</summary>
         [Newtonsoft.Json.JsonProperty("housingStatemenetIndicator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HousingStatemenetIndicator { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
-        [Newtonsoft.Json.JsonProperty("pollutionStatusCodeType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? PollutionStatusCodeType { get; set; }
+        /// <summary>Value referring to what the pollution status of the parcel is. E.g. '07' refers to "V1 kortlagt".</summary>
+        [Newtonsoft.Json.JsonProperty("pollutionStatusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutionStatusCode { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
-        [Newtonsoft.Json.JsonProperty("pollutionStatusCodeValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string PollutionStatusCodeValue { get; set; }
-
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>Boolean value explaning whether pollution covers the entire Parcel or only parts of it.</summary>
         [Newtonsoft.Json.JsonProperty("pollutionPartial", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? PollutionPartial { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
-        [Newtonsoft.Json.JsonProperty("pollutionNuanceStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string PollutionNuanceStatus { get; set; }
+        /// <summary>Value referring to what the pollution nuance status of the location is. E.g. '01' refers to "F0 Nuanceret".</summary>
+        [Newtonsoft.Json.JsonProperty("pollutionNuanceStatusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PollutionNuanceStatusCode { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>The date of when the responsible Region of the Parcel made the decision of the pollutionStatusCode and pollutionNuanceStatusCode which have been given to the Parcel.</summary>
         [Newtonsoft.Json.JsonProperty("recalculationDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset RecalculationDate { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>A reference to the Region of the Parcel. Allowed formats are {1081, 1082, 1083, 1084, 1085}.</summary>
         [Newtonsoft.Json.JsonProperty("regionCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int RegionCode { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>A reference to the Municipality of the Parcel. Allowed formats are e.g. {101, 147, 151, 153, ...}. You can find all municipality codes here: https://danmarksadresser.dk/adressedata/kodelister/kommunekodeliste/.</summary>
         [Newtonsoft.Json.JsonProperty("municipalityCode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int MunicipalityCode { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>An array of references of those StatusDeclarations that have been included in the analysis and decision of the pollutionStatusCode and pollutionNuanceStatusCode which have been given to the Parcel.</summary>
         [Newtonsoft.Json.JsonProperty("statusDeclarations", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<ParcelXStatusDeclarationComandItem> StatusDeclarations { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class ParcelXStatusDeclarationViewHistoryItem
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3432,7 +3360,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class ParcelHistoryItem
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3480,7 +3408,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class SearchView_1OfOfParcelHistoryItemAndApplicationAnd_0AndCulture_neutralAndPublicKeyToken_null
     {
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3492,21 +3420,21 @@ namespace Dmp.Jord.Integration.Sample.Rest
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class GenerateReportRequest
     {
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>(a.k.a. ejerlavskode) a unique value for a cadastral district.</summary>
         [Newtonsoft.Json.JsonProperty("cadastralDistrictIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CadastralDistrictIdentifier { get; set; }
 
-        /// <summary>[MISSING TEXT]</summary>
+        /// <summary>(a.k.a. matrikelnummer) a unique parcel value within the cadastral district.</summary>
         [Newtonsoft.Json.JsonProperty("landParcelIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LandParcelIdentifier { get; set; }
 
 
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class ApiException : System.Exception
     {
         public int StatusCode { get; private set; }
@@ -3529,7 +3457,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v11.0.0.0))")]
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class ApiException<TResult> : ApiException
     {
         public TResult Result { get; private set; }
@@ -3540,6 +3468,7 @@ namespace Dmp.Jord.Integration.Sample.Rest
             Result = result;
         }
     }
+
 }
 
 #pragma warning restore 1591
